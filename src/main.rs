@@ -3,23 +3,30 @@ extern crate serde;
 extern crate serde_derive;
 extern crate serde_json;
 mod access_control;
+mod utils;
 
 use serde_json::json;
-// use access_control;
+use utils::add::add;
+
 
 fn main() {
+    let source = "rust";
     let _j = r#"{
+        "id": "1",
+        "source": "{source}",
     }"#;
+
+    println!("source is {source}");
+
 
     let json2 = json!({
         "id": "1", 
-        "source": "s", 
+        "source": "{source}", 
         "time": "", 
         "specversion": "1", 
         "type": "vipe.access-control.access.assign.home" ,
         "data": {}
     });
-
 
     let access: access_control::AccessControl = serde_json::from_str(&json2.to_string()).unwrap();
 
@@ -49,6 +56,9 @@ fn main() {
     
     let serialized_access = serde_json::to_string(&access_new).unwrap();
     
-    println!("{} ... ", access.id);
+    println!("{} ... ", access.source);
     println!("{}", serialized_access);
+
+    let result = add(1, 2);
+    println!("result: {result}");
 }
