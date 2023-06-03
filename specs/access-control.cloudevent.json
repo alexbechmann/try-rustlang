@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "AccessControlCloudEvent",
+  "additionalProperties": true,
+  "definitions": {
+    "vipe.access-control.access.delete.home": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.delete.home"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["homeUri"],
+          "properties": {
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.delete.room": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.delete.room"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["roomUri", "homeUri"],
+          "properties": {
+            "roomUri": { "type": "string" },
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.assign.home": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.assign.home"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["uri", "userId", "role", "homeUri"],
+          "properties": {
+            "uri": { "type": "string" },
+            "userId": { "type": "string" },
+            "role": { "$ref": "types/enums/access-role.jsonschema.json" },
+            "homeUri": { "type": "string" },
+            "assignedBy": { "type": "string" },
+            "supportId": { "type": "string" },
+            "expiresAt": {
+              "$ref": "base_cloudevent_v1.0.1.json#/definitions/timedef"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.assign.room": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.assign.room"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["uri", "userId", "role", "homeUri", "roomUri"],
+          "properties": {
+            "uri": { "type": "string" },
+            "userId": { "type": "string" },
+            "role": { "$ref": "types/enums/access-role.jsonschema.json" },
+            "homeUri": { "type": "string" },
+            "roomUri": { "type": "string" },
+            "assignedBy": { "type": "string" },
+            "expiresAt": {
+              "$ref": "base_cloudevent_v1.0.1.json#/definitions/timedef"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.revoke"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["uri", "homeUri"],
+          "properties": {
+            "uri": { "type": "string" },
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke.support": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.revoke.support"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["supportId", "homeUri"],
+          "properties": {
+            "supportId": { "type": "string" },
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke.user": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.revoke.user"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["userId"],
+          "properties": {
+            "userId": { "type": "string" },
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.replace.user": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.replace.user"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["newUserId", "oldUserId", "homeUri"],
+          "properties": {
+            "oldUserId": { "type": "string" },
+            "newUserId": { "type": "string" },
+            "homeUri": { "type": "string" },
+            "expiresAt": {
+              "$ref": "base_cloudevent_v1.0.1.json#/definitions/timedef"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.expired": {
+      "required": ["data", "type"],
+      "additionalProperties": true,
+      "title": "VipeAccessControlAccessExpired",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vipe.access-control.access.expired"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["uri", "homeUri"],
+          "properties": {
+            "uri": { "type": "string" },
+            "homeUri": { "type": "string" }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [{ "$ref": "base_cloudevent_v1.0.1.json" }],
+  "anyOf": [
+    { "$ref": "#/definitions/vipe.access-control.access.delete.home" },
+    { "$ref": "#/definitions/vipe.access-control.access.delete.room" },
+    { "$ref": "#/definitions/vipe.access-control.access.assign.home" },
+    { "$ref": "#/definitions/vipe.access-control.access.assign.room" },
+    { "$ref": "#/definitions/vipe.access-control.access.revoke" },
+    { "$ref": "#/definitions/vipe.access-control.access.revoke.support" },
+    { "$ref": "#/definitions/vipe.access-control.access.revoke.user" },
+    { "$ref": "#/definitions/vipe.access-control.access.replace.user" },
+    { "$ref": "#/definitions/vipe.access-control.access.expired" }
+  ]
+}
