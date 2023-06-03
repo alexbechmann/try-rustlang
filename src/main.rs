@@ -8,7 +8,7 @@ use serde_json::json;
 // use access_control;
 
 fn main() {
-    let j = r#"{
+    let _j = r#"{
     }"#;
 
     let json2 = json!({
@@ -23,7 +23,7 @@ fn main() {
 
     let access: access_control::AccessControl = serde_json::from_str(&json2.to_string()).unwrap();
 
-    let accessNew = access_control::AccessControl {
+    let access_new = access_control::AccessControl {
         id: String::from("id"),
         source: String::from("source"),
         time: Some(String::from("time")),
@@ -47,6 +47,8 @@ fn main() {
         }
     };
     
+    let serialized_access = serde_json::to_string(&access_new).unwrap();
     
     println!("{} ... ", access.id);
+    println!("{}", serialized_access);
 }
