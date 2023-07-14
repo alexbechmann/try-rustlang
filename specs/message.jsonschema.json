@@ -13,7 +13,7 @@
     },
     "data": {
       "type": "object",
-      "required": ["greeting", "style"],
+      "required": ["greeting", "style", "thing1", "thing2"],
       "properties": {
         "greeting": {
           "type": "string"
@@ -21,6 +21,20 @@
         "style": {
           "type": "string",
           "enum": ["simple", "full"]
+        },
+        "thing1": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "object", "required": ["foo"], "properties": { "foo": { "type": "string" } } }
+          ]
+        },
+        "thing2": {
+          "allOf": [
+            { "type": "object", "required": ["foo"], "properties": { "foo": { "type": "string" } } },
+            { "type": "object", "required": ["bar"], "properties": { "bar": { "type": "string" } } }
+          ]
         }
       }
     }
