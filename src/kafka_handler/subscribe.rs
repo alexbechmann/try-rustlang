@@ -1,6 +1,5 @@
 use crate::{config::constants::get_constants, message};
 use kafka::consumer::{Consumer, FetchOffset};
-use serde_json::json;
 use std::str;
 
 pub fn subscribe() {
