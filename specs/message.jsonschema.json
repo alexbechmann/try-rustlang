@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Product",
+  "description": "A product in the catalog",
+  "allOf": [{ "$ref": "base_cloudevent_v1.0.1.json" }],
+  "type": "object",
+  "required": ["type", "data"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "example.message"
+    },
+    "data": {
+      "type": "object",
+      "required": ["greeting", "style"],
+      "properties": {
+        "greeting": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string",
+          "enum": ["simple", "full"]
+        }
+      }
+    }
+  }
+}
