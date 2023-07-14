@@ -1,1 +1,0 @@
-npx quicktype -s schema ./specs/access-control.cloudevent.json -o ./src/access_control.rs  --visibility public
