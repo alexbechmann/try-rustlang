@@ -27,7 +27,16 @@
             { "type": "string" },
             { "type": "number" },
             { "type": "boolean" },
-            { "type": "object", "required": ["foo"], "properties": { "foo": { "type": "string" } } }
+            {
+              "type": "object",
+              "required": ["type", "foo"],
+              "properties": { "type": { "type": "string", "enum": ["foo"] }, "foo": { "type": "string" } }
+            },
+            {
+              "type": "object",
+              "required": ["type", "bar"],
+              "properties": { "type": { "type": "string", "enum": ["bar"] }, "bar": { "type": "string" } }
+            }
           ]
         },
         "thing2": {

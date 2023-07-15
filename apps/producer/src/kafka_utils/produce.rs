@@ -14,7 +14,7 @@ pub fn produce() {
             id: String::from(format_f!("id-{i}")),
             source: String::from("source"),
             time: Some(String::from("time")),
-            message_type: message::Type::ExampleMessage,
+            message_type: message::MessageType::ExampleMessage,
             data_base64: Some(String::from("data_base64")),
             datacontenttype: Some(String::from("datacontenttype")),
             dataschema: Some(String::from("dataschema")),
@@ -24,7 +24,9 @@ pub fn produce() {
                 greeting: String::from(format_f!("Hello World! {i}")),
                 style: message::Style::Full,
                 thing1: message::Thing1Union::Thing1Class(message::Thing1Class {
-                    foo: String::from("id"),
+                    thing1_type: message::Thing1Type::Bar,
+                    bar: Some(String::from("bar")),
+                    foo: None,
                 }),
                 thing2: message::Thing2 {
                     foo: String::from("foo"),
