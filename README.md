@@ -14,7 +14,7 @@
 - CodeLLDB <https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb> (vadimcn.vscode-lldb) – on macOS/Linux
 - NodeJS (For codegen) <https://nodejs.org/en/download/>
 
-## Run kafka with docker
+## Development
 
 ### Setup
 
