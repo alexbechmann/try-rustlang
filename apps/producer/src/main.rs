@@ -22,13 +22,8 @@ fn main() {
         kafka_utils::produce::produce();
     });
 
-    let subscribe_thread = thread::spawn(move || {
-        kafka_utils::subscribe::subscribe();
-    });
-
     let result = add(1, 2);
     println!("result is {result}");
 
-    subscribe_thread.join().unwrap();
     produce_thread.join().unwrap();
 }
