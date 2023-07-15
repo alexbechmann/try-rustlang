@@ -2,7 +2,7 @@ init: compose codegen topics
 	echo "Init done"
 
 dev:
-	npx nodemon --exec "cargo run" --watch src --watch Cargo.toml --ext rs
+	cargo watch --watch ./src -x run
 
 codegen:
 	npx quicktype -s schema ./specs/message.jsonschema.json -o ./src/message.rs  --visibility public
