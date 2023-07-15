@@ -26,12 +26,11 @@ mod tests {
             id: "123".to_string(),
         });
 
-        match (user_created_event) {
-            event::Event::UserCreated(event::EventUserCreated { id }) => {
-                assert_eq!(id, "123")
-            }
-            _ => panic!("Wrong event type"),
-        }
+        let json = serde_json::to_string(&user_created_event).unwrap();
+        let parsed: serde_json::Value = serde_json::from_str(&json).unwrap();
+        let event_type = parsed.get("eventType").unwrap().to_string();
+
+        assert_eq!(event_type, "USER_CREATED");
     }
 
     #[test]
