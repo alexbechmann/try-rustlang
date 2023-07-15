@@ -10,7 +10,7 @@ pub fn produce() {
 
     for i in 0..10 {
         let message = message::Message {
-            id: String::from(format!("id-{}", i)),
+            id: String::from(format_f!("id-{i}")),
             source: String::from("source"),
             time: Some(String::from("time")),
             message_type: message::Type::ExampleMessage,
@@ -20,7 +20,7 @@ pub fn produce() {
             subject: Some(String::from("subject")),
             specversion: String::from("specversion"),
             data: message::Data {
-                greeting: String::from(format!("Hello World! {} ", i)),
+                greeting: String::from(format_f!("Hello World! {i}")),
                 style: message::Style::Full,
                 thing1: message::Thing1Union::Thing1Class(message::Thing1Class {
                     foo: String::from("id"),
@@ -37,7 +37,7 @@ pub fn produce() {
         producer
             .send(&Record::from_value(topic, message_json.as_bytes()))
             .unwrap();
-        println!("Produced message: {} ", message.id);
+        println_f!("Produced message: {message.id}");
         thread::sleep(Duration::from_secs(3)); // Simulating work
     }
 }

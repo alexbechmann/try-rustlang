@@ -5,6 +5,8 @@ extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
 extern crate serde_json;
+#[macro_use]
+extern crate fstrings;
 
 mod config;
 mod kafka_utils;
