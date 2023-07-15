@@ -28,7 +28,7 @@ mod tests {
 
         let json = serde_json::to_string(&user_created_event).unwrap();
         let parsed: serde_json::Value = serde_json::from_str(&json).unwrap();
-        let event_type = parsed.get("eventType").unwrap().to_string();
+        let event_type = &parsed["eventType"];
 
         assert_eq!(event_type, "USER_CREATED");
     }
