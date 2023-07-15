@@ -15,12 +15,16 @@
 
 ## Run kafka with docker
 
-```bash
-docker-compose up -d
-make topics
-```
+### Setup
+
+Setup kafka in docker containers and topics.
 
 ```bash
-make codegen
-make dev
+make init
+```
+
+Start producer & subscriber services
+
+```bash
+npx nf start
 ```
