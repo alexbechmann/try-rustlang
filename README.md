@@ -29,3 +29,7 @@ Start producer & subscriber services
 ```bash
 npx nf start
 ```
+
+## Links
+
+- <https://jsontypedef.com/docs/rust-codegen/>
