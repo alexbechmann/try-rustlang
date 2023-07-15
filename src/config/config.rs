@@ -1,12 +1,11 @@
-
 use std::env;
 
-pub struct Constants {
+pub struct Config {
     pub kafka_brokers: String,
 }
 
-pub fn get_constants() -> Constants {
-    Constants {
+lazy_static! {
+    pub static ref CONFIG: Config = Config {
         kafka_brokers: env::var("KAFKA_BROKERS").unwrap(),
-    }
+    };
 }

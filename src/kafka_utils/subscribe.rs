@@ -1,11 +1,10 @@
-use crate::{config::constants::get_constants, message};
+use crate::{config::config, message};
 use kafka::consumer::{Consumer, FetchOffset};
 use std::str;
 
 pub fn subscribe() {
     println!("subscribe");
-    let constants = get_constants();
-    let brokers = vec![constants.kafka_brokers];
+    let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
     let topic = "messages";
     let group_id = "my-group".to_string();
     let mut consumer = Consumer::from_hosts(brokers)

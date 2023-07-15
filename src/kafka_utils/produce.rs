@@ -1,10 +1,9 @@
-use crate::{config::constants::get_constants, message};
+use crate::{config::config, message};
 use kafka::producer::{Producer, Record};
 use std::{thread, time::Duration};
 
 pub fn produce() {
-    let constants = get_constants();
-    let brokers = vec![constants.kafka_brokers];
+    let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
     let topic = "messages";
     let mut producer = Producer::from_hosts(brokers).create().unwrap();
     println!("Starting producer...");
