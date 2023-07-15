@@ -1,6 +1,7 @@
-use crate::{config::config, message};
+use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
 use std::str;
+use utils::message;
 
 pub fn subscribe() {
     println!("subscribe");

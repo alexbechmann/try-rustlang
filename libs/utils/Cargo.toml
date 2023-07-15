@@ -1,5 +1,5 @@
 [package]
-name = "try-rustlang"
+name = "utils"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,7 +9,3 @@ edition = "2021"
 serde = "1.0.163"
 serde_derive = "1.0.163"
 serde_json = "1.0.96"
-kafka = "0.9"
-dotenv = "0.15.0"
-lazy_static = "1.4.0"
-fstrings = "0.2.3"

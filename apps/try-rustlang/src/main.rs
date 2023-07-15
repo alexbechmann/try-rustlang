@@ -1,22 +1,17 @@
-extern crate serde;
 #[macro_use]
-extern crate serde_derive;
+extern crate fstrings;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
 extern crate serde_json;
-#[macro_use]
-extern crate fstrings;
+extern crate utils;
 
 mod config;
 mod kafka_utils;
-mod message;
-mod utils;
-
-use std::thread;
 
 use dotenv::dotenv;
-use utils::add::add;
+use std::thread;
+use utils::add;
 
 fn main() {
     dotenv().ok();

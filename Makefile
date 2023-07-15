@@ -1,14 +1,15 @@
-init: compose codegen topics 
+init: compose codegen topics
 	echo "Init done"
 
-dev:
-	cargo watch --watch ./src -x run
+install: 
+	cd libs/utils && cargo build
+	cd apps/try-rustlang && cargo build
 
 codegen:
-	npx quicktype -s schema ./specs/message.jsonschema.json -o ./src/message.rs  --visibility public
+	cd libs/utils && npx quicktype -s schema ../../specs/message.jsonschema.json -o ./src/message.rs  --visibility public
 
 topics:
-	 docker-compose exec kafka kafka-topics --create --topic messages --bootstrap-server localhost:9092
+	 docker-compose exec kafka kafka-topics --create --topic messages --bootstrap-server localhost:9092 --if-not-exists
 
 compose: 
 	docker-compose up -d

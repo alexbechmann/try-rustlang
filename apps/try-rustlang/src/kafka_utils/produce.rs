@@ -1,6 +1,7 @@
-use crate::{config::config, message};
+use crate::config::config;
 use kafka::producer::{Producer, Record};
 use std::{thread, time::Duration};
+use utils::message;
 
 pub fn produce() {
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
