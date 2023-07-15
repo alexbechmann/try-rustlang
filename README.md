@@ -12,6 +12,7 @@
 - Rust extension <https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer>
 - Microsoft C++ <https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools> (ms-vscode.cpptools) – on Windows
 - CodeLLDB <https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb> (vadimcn.vscode-lldb) – on macOS/Linux
+- NodeJS (For codegen) <https://nodejs.org/en/download/>
 
 ## Run kafka with docker
 
