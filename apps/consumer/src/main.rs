@@ -16,14 +16,14 @@ use utils::add;
 fn main() {
     dotenv().ok();
     let source = "rust";
-    println!("source is {source}");
+    println_f!("source is {source}");
 
     let subscribe_thread = thread::spawn(move || {
         kafka_utils::subscribe::subscribe();
     });
 
     let result = add(1, 2);
-    println!("result is {result}");
+    println_f!("result is {result}");
 
     subscribe_thread.join().unwrap();
 }
