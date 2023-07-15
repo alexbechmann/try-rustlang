@@ -50,6 +50,10 @@ mod tests {
                 plan,
             }) => {
                 assert_eq!(id, "123");
+                match plan {
+                    event::EventUserPaymentPlanChangedPlan::Free => assert!(true),
+                    _ => assert!(false),
+                }
             }
             _ => panic!("Wrong event type"),
         }
