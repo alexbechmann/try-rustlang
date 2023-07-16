@@ -20,6 +20,6 @@ clean:
 	docker-compose down
 
 test:
-	cd libs/utils && cargo test
 	cd apps/producer && cargo test
 	cd apps/consumer && cargo test
+	cd libs/utils && cargo test

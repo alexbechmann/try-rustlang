@@ -41,7 +41,7 @@ mod tests {
             "plan": "FREE"
         }"#;
 
-        let event: event::Event = serde_json::from_str(&json.to_string()).unwrap();
+        let event: event::Event = serde_json::from_str(&json).unwrap();
 
         match event {
             event::Event::UserPaymentPlanChanged(e) => {
