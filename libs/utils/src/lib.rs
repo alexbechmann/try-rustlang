@@ -43,16 +43,13 @@ mod tests {
 
         let event: event::Event = serde_json::from_str(&json.to_string()).unwrap();
 
-        match (event) {
-            event::Event::UserPaymentPlanChanged(event::EventUserPaymentPlanChanged {
-                id,
-                plan,
-            }) => {
-                assert_eq!(id, "123");
-                match plan {
-                    event::EventUserPaymentPlanChangedPlan::Free => assert!(true),
-                    _ => assert!(false),
-                }
+        match event {
+            event::Event::UserPaymentPlanChanged(e) => {
+                assert_eq!(e.id, "123");
+                assert!(matches!(
+                    e.plan,
+                    event::EventUserPaymentPlanChangedPlan::Free
+                ));
             }
             _ => panic!("Wrong event type"),
         }
