@@ -6,7 +6,20 @@
       "command": "build",
       "problemMatcher": ["$rustc"],
       "group": "build",
-      "label": "build"
+      "label": "build-producer",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/producer"
+      }
+    },
+    {
+      "type": "cargo",
+      "command": "build",
+      "problemMatcher": ["$rustc"],
+      "group": "build",
+      "label": "build-consumer",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/consumer"
+      }
     }
   ]
 }
