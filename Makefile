@@ -7,8 +7,8 @@ install:
 	cd apps/consumer && cargo build
 
 codegen:
-	cd libs/utils && npx -y quicktype@23.0.59 -s schema ../../specs/message.jsonschema.json -o ./src/message.rs  --visibility public
-	jtd-codegen ./specs/event.jtd.json --rust-out ./libs/utils/src/event.rs 
+	jtd-codegen ./specs/event.jtd.json --rust-out ./libs/utils/src/event/
+	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
 topics:
 	docker-compose exec kafka kafka-topics --create --topic messages --bootstrap-server localhost:9092 --if-not-exists
