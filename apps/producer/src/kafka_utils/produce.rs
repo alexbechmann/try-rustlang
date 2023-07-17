@@ -23,15 +23,16 @@ pub fn produce() {
             data: message::Data {
                 greeting: String::from(format_f!("Hello World! {i}")),
                 style: message::Style::Full,
-                thing1: message::Thing1Union::Thing1Class(message::Thing1Class {
+                thing1: message::Thing1 {
                     thing1_type: message::Thing1Type::Bar,
                     bar: Some(String::from("bar")),
                     foo: None,
-                }),
+                },
                 thing2: message::Thing2 {
                     foo: String::from("foo"),
                     bar: String::from("bar"),
                 },
+                thing3: message::Thing3::Bool(false),
             },
         };
 

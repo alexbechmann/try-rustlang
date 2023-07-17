@@ -32,25 +32,15 @@ fn handle_event(json_value: &str) {
 
     println!("Received message: {}", message.id);
 
-    match &message.data.thing1 {
-        message::Thing1Union::Bool(value) => {
+    match &message.data.thing3 {
+        message::Thing3::Bool(value) => {
             println_f!("Bool value: {value}");
         }
-        message::Thing1Union::Double(value) => {
+        message::Thing3::Double(value) => {
             println_f!("Double value: {value}");
         }
-        message::Thing1Union::String(value) => {
+        message::Thing3::String(value) => {
             println_f!("String value: {value}");
-        }
-        message::Thing1Union::Thing1Class(thing1_class) => {
-            match &thing1_class.foo {
-                Some(value) => println!("Thing1Class foo value is: {}", value),
-                None => println!("No foo value"),
-            }
-            match &thing1_class.bar {
-                Some(value) => println!("Thing1Class bar value is: {}", value),
-                None => println!("No bar value"),
-            }
         }
     }
 }
