@@ -1,0 +1,394 @@
+{
+  "discriminator": "type",
+  "mapping": {
+    "vipe.access-control.access.delete.home": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.delete.room": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "roomUri": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.assign.home": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "OWNER",
+                "USER",
+                "TENANT",
+                "SUPPORTER",
+                "READER",
+                "INSTALLER"
+              ]
+            },
+            "homeUri": {
+              "type": "string"
+            },
+            "assignedBy": {
+              "type": "string"
+            },
+            "supportId": {
+              "type": "string"
+            },
+            "expiresAt": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.assign.room": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "OWNER",
+                "USER",
+                "TENANT",
+                "SUPPORTER",
+                "READER",
+                "INSTALLER"
+              ]
+            },
+            "homeUri": {
+              "type": "string"
+            },
+            "roomUri": {
+              "type": "string"
+            },
+            "assignedBy": {
+              "type": "string"
+            },
+            "expiresAt": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke.support": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "supportId": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.revoke.user": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "userId": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.replace.user": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "oldUserId": {
+              "type": "string"
+            },
+            "newUserId": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            },
+            "expiresAt": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "vipe.access-control.access.expired": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "specversion": {
+          "type": "string"
+        },
+        "datacontenttype": {
+          "type": "string"
+        },
+        "dataschema": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        },
+        "data_base64": {
+          "type": "string"
+        },
+        "data": {
+          "properties": {
+            "uri": {
+              "type": "string"
+            },
+            "homeUri": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

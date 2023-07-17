@@ -6,8 +6,10 @@ pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
+pub mod access_control;
 pub mod event;
 pub mod message;
+use chrono::{DateTime, FixedOffset, Utc};
 
 #[cfg(test)]
 mod tests {
@@ -50,6 +52,50 @@ mod tests {
                     e.plan,
                     event::EventUserPaymentPlanChangedPlan::Free
                 ));
+            }
+            _ => panic!("Wrong event type"),
+        }
+    }
+
+    #[test]
+    fn access_control_serialize_deserialize() {
+        let event = access_control::AccessControl::VipeAccessControlAccessAssignHome(
+            access_control::AccessControlVipeAccessControlAccessAssignHome {
+                id: "123".to_string(),
+                dataBase64: "123".to_string(),
+                datacontenttype: "123".to_string(),
+                dataschema: "123".to_string(),
+                source: "123".to_string(),
+                specversion: "123".to_string(),
+                subject: "123".to_string(),
+                time: "123".to_string(),
+                data: access_control::AccessControlVipeAccessControlAccessAssignHomeData { 
+                    assignedBy: "123".to_string(),
+                    // expiresAt:  Utc::now().fixed_offset(),
+                    expiresAt:  "".to_string(),
+                    homeUri: "123".to_string(),
+                    role: access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer,
+                    supportId: "123".to_string(),
+                    uri: "123".to_string(),
+                    userId: "123".to_string(),
+                }
+            },
+        );
+
+        let json = serde_json::to_string(&event).unwrap();
+
+        let parsed: access_control::AccessControl = serde_json::from_str(&json).unwrap();
+
+        match parsed {
+            access_control::AccessControl::VipeAccessControlAccessAssignHome(e) => {
+                assert_eq!(e.id, "123");
+                assert_eq!(e.data.assignedBy, "123");
+                assert_eq!(e.data.expiresAt, "");
+                assert_eq!(e.data.homeUri, "123");
+                assert!(matches!(e.data.role, access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer));
+                assert_eq!(e.data.supportId, "123");
+                assert_eq!(e.data.uri, "123");
+                assert_eq!(e.data.userId, "123");
             }
             _ => panic!("Wrong event type"),
         }

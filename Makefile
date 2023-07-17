@@ -8,6 +8,7 @@ install:
 
 codegen:
 	jtd-codegen ./specs/event.jtd.json --rust-out ./libs/utils/src/event/
+	jtd-codegen ./specs/access-control.jtd.json --rust-out ./libs/utils/src/access_control/
 	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
 topics:
