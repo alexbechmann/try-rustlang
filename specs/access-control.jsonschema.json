@@ -53,7 +53,7 @@
           "properties": {
             "uri": { "type": "string" },
             "userId": { "type": "string" },
-            "role": { "enum": ["OWNER", "USER", "TENANT", "SUPPORTER", "READER", "INSTALLER"], "type": "string" },
+            "role": { "$ref": "types/enums/access-role.jsonschema.json" },
             "homeUri": { "type": "string" },
             "assignedBy": { "type": "string" },
             "supportId": { "type": "string" },
@@ -78,7 +78,7 @@
           "properties": {
             "uri": { "type": "string" },
             "userId": { "type": "string" },
-            "role": { "enum": ["OWNER", "USER", "TENANT", "SUPPORTER", "READER", "INSTALLER"], "type": "string" },
+            "role": { "$ref": "types/enums/access-role.jsonschema.json" },
             "homeUri": { "type": "string" },
             "roomUri": { "type": "string" },
             "assignedBy": { "type": "string" },
