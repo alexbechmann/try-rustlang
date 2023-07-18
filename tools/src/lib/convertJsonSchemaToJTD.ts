@@ -4,17 +4,6 @@ import fs from "fs";
 import type { JSONSchema4, JSONSchema4Object, JSONSchema6, JSONSchema6Object, JSONSchema7, JSONSchema7Object } from "json-schema";
 import { cloudEventProperties } from "./cloudEventProperties.js";
 
-// type JSONSchema = JSONSchema4 | JSONSchema6 | JSONSchema7;
-type JSONSchema = NonNullable<$RefParser["schema"]>;
-
-// type JSONProperties = {
-//     [k: string]: JSONSchema4;
-// }
-
-// const x: Required
-
-// type JSONProperties = NonNullable<JSONSchema4Object["properties"] | JSONSchema6Object["properties"] | JSONSchema7Object["properties"]>;
-
 export async function convertJsonSchemaToJTD({ jsonschemaRelativePath, outputDir }: { jsonschemaRelativePath: string; outputDir: string }) {
   const schemaPath = path.resolve(process.cwd(), jsonschemaRelativePath);
   let schema = await $RefParser.dereference(schemaPath);
@@ -34,37 +23,18 @@ export async function convertJsonSchemaToJTD({ jsonschemaRelativePath, outputDir
             Object.entries(value.properties.data.properties)
               .filter(([k, v]) => required.includes(k))
               .reduce((acc, [k, v]) => {
-                console.log("ab", { k, v });
                 return { ...acc, [k]: v };
               }, {}) || {},
           optionalProperties:
             Object.entries(value.properties.data.properties)
               .filter(([k, v]) => !required.includes(k))
               .reduce((acc, [k, v]) => {
-                console.log("abc", { k, v });
                 return { ...acc, [k]: v };
               }, {}) || {},
         },
       },
     };
 
-    console.log(JSON.stringify(jtdSchema, null, 2));
-    // console.log(
-    //   JSON.stringify(
-    //     {
-    //       properties: {
-    //         key,
-    //         value: value.properties.data.properties,
-    //       },
-    //       optionalProperties: {
-    //         key,
-    //         value: value.properties.data.optionalProperties,
-    //       },
-    //     },
-    //     null,
-    //     2
-    //   )
-    // );
     fixProperties({ properties: jtdSchema.mapping[key].properties.data.properties });
     fixProperties({ properties: jtdSchema.mapping[key].properties.data.optionalProperties });
   }
@@ -76,7 +46,6 @@ export async function convertJsonSchemaToJTD({ jsonschemaRelativePath, outputDir
 }
 
 function fixProperties({ properties }: { properties: any }) {
-  console.log({ properties });
   for (const [propertyKey, propertyValue] of Object.entries(properties) as any) {
     if (propertyValue.properties) {
       fixProperties({ properties: propertyValue.properties });
@@ -86,11 +55,9 @@ function fixProperties({ properties }: { properties: any }) {
 }
 
 function fixProperty(propertyValue: any) {
-  if (propertyValue.$ref) {
-    if (propertyValue.$ref.indexOf("timedef") > -1) {
-      propertyValue.type = "timestamp";
-    }
-    delete propertyValue.$ref;
+  if (propertyValue.format === "date-time") {
+    console.log(propertyValue);
+    propertyValue.type = "timestamp";
   }
   if (propertyValue.enum) {
     delete propertyValue.type;

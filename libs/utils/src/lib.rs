@@ -2,19 +2,19 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
 pub mod access_control;
 pub mod event;
 pub mod message;
 
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
 #[cfg(test)]
 mod tests {
-    use super::*;
     use chrono::Utc;
-    use event;
+
+    use super::*;
 
     #[test]
     fn it_works() {
@@ -59,29 +59,22 @@ mod tests {
 
     #[test]
     fn access_control_serialize_deserialize() {
-        let event = access_control::AccessControl::VipeAccessControlAccessAssignHome(
-            access_control::AccessControlVipeAccessControlAccessAssignHome {
-                id: "123".to_string(),
-                dataBase64: "123".to_string(),
-                datacontenttype: "123".to_string(),
-                dataschema: "123".to_string(),
-                source: "123".to_string(),
-                specversion: "123".to_string(),
-                subject: "123".to_string(),
+        let event = access_control::AccessControl::ExampleAccessControlAccessAssign(
+            access_control::AccessControlExampleAccessControlAccessAssign {
+                id: "34264c61-9ff4-47ee-802f-9f965f656072".to_string(),
+                dataBase64: "_".to_string(),
+                datacontenttype: "application/json".to_string(),
+                dataschema: "schema1".to_string(),
+                source: "rust".to_string(),
+                specversion: "1.0.0".to_string(),
+                subject: "example".to_string(),
                 time: Utc::now().fixed_offset(),
-                data: access_control::AccessControlVipeAccessControlAccessAssignHomeData { 
-                    // assignedBy: "123".to_string(),
-                    // expiresAt:  Utc::now().fixed_offset(),
-                    // expiresAt:  "".to_string(),
-                    assignedBy: None,
-                    expiresAt: None,
-                    supportId: None,
-                    homeUri: "123".to_string(),
-                    role: access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer,
-                    // supportId: "123".to_string(),
-                    uri: "123".to_string(),
-                    userId: "123".to_string(),
-                }
+                data: access_control::AccessControlExampleAccessControlAccessAssignData {
+                    expiresAt: Some(Box::new(Utc::now().fixed_offset())),
+                    id: "1e01c523-0fcf-4923-8999-3ff69f79beaa".to_string(),
+                    role: access_control::AccessControlExampleAccessControlAccessAssignDataRole::Reader,
+                    userId: "2041b73b-2178-44fc-b74d-c06ec61062f7".to_string()
+                },
             },
         );
 
@@ -90,15 +83,12 @@ mod tests {
         let parsed: access_control::AccessControl = serde_json::from_str(&json).unwrap();
 
         match parsed {
-            access_control::AccessControl::VipeAccessControlAccessAssignHome(e) => {
-                assert_eq!(e.id, "123");
-                // assert_eq!(e.data.assignedBy, "123");
-                // assert_eq!(e.data.expiresAt, "");
-                assert_eq!(e.data.homeUri, "123");
-                assert!(matches!(e.data.role, access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer));
-                // assert_eq!(e.data.supportId, "123");
-                assert_eq!(e.data.uri, "123");
-                assert_eq!(e.data.userId, "123");
+            access_control::AccessControl::ExampleAccessControlAccessAssign(e) => {
+                assert!(matches!(
+                    e.data.role,
+                    access_control::AccessControlExampleAccessControlAccessAssignDataRole::Reader
+                ));
+                assert_eq!(e.data.id, "1e01c523-0fcf-4923-8999-3ff69f79beaa");
             }
             _ => panic!("Wrong event type"),
         }

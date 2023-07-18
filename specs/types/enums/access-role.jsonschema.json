@@ -2,5 +2,5 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "AccessRole",
   "type": "string",
-  "enum": ["OWNER", "USER", "TENANT", "SUPPORTER", "READER", "INSTALLER"]
+  "enum": ["OWNER", "READER"]
 }
