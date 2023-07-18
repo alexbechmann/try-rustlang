@@ -9,11 +9,11 @@ pub fn add(left: usize, right: usize) -> usize {
 pub mod access_control;
 pub mod event;
 pub mod message;
-use chrono::{DateTime, FixedOffset, Utc};
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::Utc;
     use event;
 
     #[test]
@@ -68,14 +68,17 @@ mod tests {
                 source: "123".to_string(),
                 specversion: "123".to_string(),
                 subject: "123".to_string(),
-                time: "123".to_string(),
+                time: Utc::now().fixed_offset(),
                 data: access_control::AccessControlVipeAccessControlAccessAssignHomeData { 
-                    assignedBy: "123".to_string(),
+                    // assignedBy: "123".to_string(),
                     // expiresAt:  Utc::now().fixed_offset(),
-                    expiresAt:  "".to_string(),
+                    // expiresAt:  "".to_string(),
+                    assignedBy: None,
+                    expiresAt: None,
+                    supportId: None,
                     homeUri: "123".to_string(),
                     role: access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer,
-                    supportId: "123".to_string(),
+                    // supportId: "123".to_string(),
                     uri: "123".to_string(),
                     userId: "123".to_string(),
                 }
@@ -89,11 +92,11 @@ mod tests {
         match parsed {
             access_control::AccessControl::VipeAccessControlAccessAssignHome(e) => {
                 assert_eq!(e.id, "123");
-                assert_eq!(e.data.assignedBy, "123");
-                assert_eq!(e.data.expiresAt, "");
+                // assert_eq!(e.data.assignedBy, "123");
+                // assert_eq!(e.data.expiresAt, "");
                 assert_eq!(e.data.homeUri, "123");
                 assert!(matches!(e.data.role, access_control::AccessControlVipeAccessControlAccessAssignHomeDataRole::Installer));
-                assert_eq!(e.data.supportId, "123");
+                // assert_eq!(e.data.supportId, "123");
                 assert_eq!(e.data.uri, "123");
                 assert_eq!(e.data.userId, "123");
             }

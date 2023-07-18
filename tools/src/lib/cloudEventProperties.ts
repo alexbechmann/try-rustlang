@@ -18,7 +18,7 @@ export const cloudEventProperties = {
     type: "string",
   },
   time: {
-    type: "string",
+    type: "timestamp",
   },
   data_base64: {
     type: "string",

@@ -8,8 +8,9 @@ install:
 	cd apps/consumer && cargo build
 
 codegen:
+	cd tools && npm run convert
 	jtd-codegen ./specs/event.jtd.json --rust-out ./libs/utils/src/event/
-	jtd-codegen ./specs/access-control.jtd.json --rust-out ./libs/utils/src/access_control/
+	jtd-codegen ./specs/access-control.jsonschema.jtd.json --rust-out ./libs/utils/src/access_control/ --root-name AccessControl
 	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
 topics:
