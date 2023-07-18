@@ -5,13 +5,35 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "Producer debug",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/target/debug/try-rustlang",
+      "program": "${workspaceFolder}/apps/producer/target/debug/producer",
       "args": [],
-      "cwd": "${workspaceFolder}",
-      "preLaunchTask": "build"
+      "cwd": "${workspaceFolder}/apps/producer",
+      "preLaunchTask": "build-producer"
+    },
+    {
+      "name": "Producer attach",
+      "type": "lldb",
+      "request": "attach",
+      "program": "${workspaceFolder}/apps/producer/target/debug/producer"
+    },
+    // consumer
+    {
+      "name": "Consumer debug",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/consumer/target/debug/consumer",
+      "args": [],
+      "cwd": "${workspaceFolder}/apps/consumer",
+      "preLaunchTask": "build-consumer"
+    },
+    {
+      "name": "Consumer attach",
+      "type": "lldb",
+      "request": "attach",
+      "program": "${workspaceFolder}/apps/consumer/target/debug/consumer"
     }
   ]
 }

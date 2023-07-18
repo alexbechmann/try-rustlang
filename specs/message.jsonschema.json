@@ -13,7 +13,7 @@
     },
     "data": {
       "type": "object",
-      "required": ["greeting", "style", "thing1", "thing2"],
+      "required": ["greeting", "style", "thing1", "thing2", "thing3"],
       "properties": {
         "greeting": {
           "type": "string"
@@ -23,10 +23,9 @@
           "enum": ["simple", "full"]
         },
         "thing1": {
+          "type": "object",
+          "required": ["type"],
           "anyOf": [
-            { "type": "string" },
-            { "type": "number" },
-            { "type": "boolean" },
             {
               "type": "object",
               "required": ["type", "foo"],
@@ -44,6 +43,9 @@
             { "type": "object", "required": ["foo"], "properties": { "foo": { "type": "string" } } },
             { "type": "object", "required": ["bar"], "properties": { "bar": { "type": "string" } } }
           ]
+        },
+        "thing3": {
+          "anyOf": [{ "type": "string" }, { "type": "number" }, { "type": "boolean" }]
         }
       }
     }
