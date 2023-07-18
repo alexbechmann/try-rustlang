@@ -2,6 +2,7 @@ init: compose install codegen topics
 	echo "Init done"
 
 install: 
+	cd tools && npm install
 	cd libs/utils && cargo build
 	cd apps/producer && cargo build
 	cd apps/consumer && cargo build
