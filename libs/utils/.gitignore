@@ -1,2 +1,4 @@
 /target
 src/message.rs
+src/generated/*.rs
+!src/generated/mod.rs

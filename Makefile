@@ -9,6 +9,9 @@ install:
 codegen:
 	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
+	cd libs/utils && rsgen-avro ../../specs/avro/purchase.avsc ./src/generated/purchase.rs
+	cd libs/utils && rsgen-avro ../../specs/avro/page-view.avsc ./src/generated/page_view.rs
+
 topics:
 	docker-compose exec kafka kafka-topics --create --topic messages --bootstrap-server localhost:9092 --if-not-exists
 

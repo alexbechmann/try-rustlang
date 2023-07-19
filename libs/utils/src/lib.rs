@@ -1,11 +1,8 @@
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
+pub mod generated;
 pub mod message;
 
 #[cfg(test)]
