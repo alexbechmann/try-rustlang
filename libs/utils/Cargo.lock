@@ -418,6 +418,7 @@ checksum = "301abaae475aa91687eb82514b328ab47a211a533026cb25fc3e519b86adfc3c"
 name = "utils"
 version = "0.1.0"
 dependencies = [
+ "protobuf",
  "protobuf-codegen",
  "protoc-bin-vendored",
  "serde",

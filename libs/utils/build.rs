@@ -9,8 +9,11 @@ fn main() {
         .includes(&["../../specs/protobuf"])
         // Inputs must reside in some of include paths.
         .input("../../specs/protobuf/purchase.proto")
+        .input("../../specs/protobuf/page-view.proto")
+        .input("../../specs/protobuf/customer-event.proto")
         // .input("src/protos/banana.proto")
         // Specify output directory relative to Cargo output directory.
         .cargo_out_dir("protos")
+        .out_dir("src/protos")
         .run_from_script();
 }
