@@ -15,7 +15,24 @@
     "USER_DELETED": {
       "properties": {
         "id": { "type": "string" },
-        "softDelete": { "type": "boolean" }
+        "softDelete": { "type": "boolean" },
+        "anything": {
+          "discriminator": "anythingType",
+          "mapping": {
+            "A_THING": {
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" }
+              }
+            },
+            "B_THING": {
+              "properties": {
+                "id": { "type": "string" },
+                "name": { "type": "string" }
+              }
+            }
+          }
+        }
       }
     }
   }

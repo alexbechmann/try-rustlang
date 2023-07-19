@@ -36,6 +36,33 @@ mod tests {
     }
 
     #[test]
+    fn codegen_serialize_2_test() {
+        let event = event::Event::UserDeleted(event::EventUserDeleted {
+            anything: event::EventUserDeletedAnything::AThing(
+                event::EventUserDeletedAnythingAThing {
+                    id: "123".to_string(),
+                    name: "name".to_string(),
+                },
+            ),
+            id: "id".to_string(),
+            softDelete: false,
+        });
+
+        let json = serde_json::to_string(&event).unwrap();
+        let parsed: event::Event = serde_json::from_str(&json).unwrap();
+        match parsed {
+            event::Event::UserDeleted(e) => match e.anything {
+                event::EventUserDeletedAnything::AThing(t) => {
+                    assert_eq!(t.id, "123");
+                    assert_eq!(t.name, "name");
+                }
+                _ => panic!("Wrong event type"),
+            },
+            _ => panic!("Wrong event type"),
+        }
+    }
+
+    #[test]
     fn codegen_deserialize_test() {
         let json = r#"{
             "eventType": "USER_PAYMENT_PLAN_CHANGED",
