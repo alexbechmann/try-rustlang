@@ -2,7 +2,7 @@ use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
 use utils::customer_event;
-use utils::purchase;
+
 
 pub fn subscribe() {
     println!("subscribe");
