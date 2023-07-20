@@ -1,8 +1,8 @@
 use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
-use std::str;
-use utils::{message, protos};
+
+use utils::{protos};
 
 pub fn subscribe() {
     println!("subscribe");
