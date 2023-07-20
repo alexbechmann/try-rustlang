@@ -21,16 +21,21 @@ mod tests {
 
     #[test]
     fn proto_gen() {
-        let purchase = protos::customer_event::CustomerEvent {
-            id: "id".to_string(),
-            action: Some(protos::customer_event::customer_event::Action::Purchase(
-                protos::purchase::Purchase {
-                    amount: 12.0,
-                    customer_id: "customer1".to_string(),
-                    item: "item1".to_string(),
-                    special_fields: SpecialFields::new(),
-                },
-            )),
+        let purchase = protos::customer_event::CustomerCloudEvent {
+            id: String::from("id"),
+            source: String::from("source"),
+            spec_version: String::from("0.1.0"),
+            type_: protos::customer_event::customer_cloud_event::Type::PURCHASE.into(),
+            data: Some(
+                protos::customer_event::customer_cloud_event::Data::Purchase(
+                    protos::purchase::Purchase {
+                        amount: 12.0,
+                        customer_id: String::from("customer1"),
+                        item: Some(String::from("item1")),
+                        special_fields: SpecialFields::new(),
+                    },
+                ),
+            ),
             special_fields: SpecialFields::new(),
         };
         let serialized = protobuf::Message::write_to_bytes(&purchase);

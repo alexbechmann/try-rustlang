@@ -7,10 +7,19 @@ import "page-view.proto";
 
 option java_outer_classname = "CustomerEventProto";
 
-message CustomerEvent {  
-  oneof action {   
-    Purchase purchase = 1;
-    PageView page_view = 2;
+message CustomerCloudEvent {  
+  string id = 1;
+  string source = 2; // URI-reference
+  string spec_version = 3;
+
+  enum Type {
+    PURCHASE = 0;
+    PAGE_VIEW = 1;
   }
-  string id = 3;
+  Type type = 4;
+
+  oneof data {   
+    Purchase purchase = 5;
+    PageView page_view = 6;
+  }
 }
