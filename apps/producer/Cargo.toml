@@ -12,3 +12,4 @@ dotenv = "0.15.0"
 lazy_static = "1.4.0"
 fstrings = "0.2.3"
 utils = { path = "../../libs/utils" }
+protobuf = "3.2.0"

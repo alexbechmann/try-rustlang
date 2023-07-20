@@ -1,7 +1,8 @@
 use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
+use protobuf::Message;
 use std::str;
-use utils::message;
+use utils::{message, protos};
 
 pub fn subscribe() {
     println!("subscribe");
@@ -18,8 +19,7 @@ pub fn subscribe() {
     loop {
         for ms in consumer.poll().unwrap().iter() {
             for m in ms.messages() {
-                let json_value = str::from_utf8(m.value).unwrap();
-                handle_event(json_value);
+                handle_event(m.value);
             }
             consumer.consume_messageset(ms).unwrap();
         }
@@ -27,20 +27,17 @@ pub fn subscribe() {
     }
 }
 
-fn handle_event(json_value: &str) {
-    let message: message::Message = serde_json::from_str(&json_value.to_string()).unwrap();
+fn handle_event(bytes: &[u8]) {
+    let event = protos::customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
+    println_f!("Received event: {event.id} from {event.source}");
 
-    println!("Received message: {}", message.id);
-
-    match &message.data.thing3 {
-        message::Thing3::Bool(value) => {
-            println_f!("Bool value: {value}");
-        }
-        message::Thing3::Double(value) => {
-            println_f!("Double value: {value}");
-        }
-        message::Thing3::String(value) => {
-            println_f!("String value: {value}");
-        }
+    match event.data {
+        Some(data) => match data {
+            protos::customer_event::customer_cloud_event::Data::Purchase(purchase) => {
+                println_f!("Purchase received with amount {purchase.amount}")
+            }
+            _ => panic!(),
+        },
+        _ => panic!(),
     }
 }

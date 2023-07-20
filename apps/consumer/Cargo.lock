@@ -61,6 +61,7 @@ dependencies = [
  "fstrings",
  "kafka",
  "lazy_static",
+ "protobuf",
  "serde_json",
  "utils",
 ]
