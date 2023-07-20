@@ -22,3 +22,8 @@ test:
 	cd libs/utils && cargo test
 	cd apps/producer && cargo test
 	cd apps/consumer && cargo test
+
+fix: 
+	cd libs/utils && cargo fix
+	cd apps/producer && cargo fix
+	cd apps/consumer && cargo fix

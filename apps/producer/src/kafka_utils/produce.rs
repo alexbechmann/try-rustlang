@@ -2,7 +2,7 @@ use crate::config::config;
 use kafka::producer::{Producer, Record};
 use protobuf::SpecialFields;
 use std::{thread, time::Duration};
-use utils::{protos};
+use utils::protos;
 
 pub fn produce() {
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
@@ -11,25 +11,28 @@ pub fn produce() {
     println!("Starting producer...");
 
     for i in 0..i32::MAX {
-        let purchase: protos::customer_event::CustomerCloudEvent =
-            protos::customer_event::CustomerCloudEvent {
-                id: String::from(format_f!("id-{i}")),
-                source: String::from("try-rustlang-producer"),
-                spec_version: String::from("0.1.0"),
-                type_: protos::customer_event::customer_cloud_event::Type::PURCHASE.into(),
-                data: Some(
-                    protos::customer_event::customer_cloud_event::Data::Purchase(
-                        protos::purchase::Purchase {
-                            amount: 12.0,
-                            customer_id: String::from(format_f!("customer-{i}")),
-                            item: Some(String::from("item1")),
-                            special_fields: SpecialFields::new(),
-                        },
-                    ),
-                ),
+        let purchase = protos::purchase::PurchaseCloudEvent {
+            id: String::from("id"),
+            source: String::from("try-rustlang-producer"),
+            spec_version: String::from("0.1.0"),
+            special_fields: SpecialFields::new(),
+            type_: protos::purchase::purchase_cloud_event::Type::PURCHASE.into(),
+            time: String::from("time"),
+            data: Some(protos::purchase::purchase_cloud_event::Data {
+                amount: 12.0,
+                customer_id: String::from("customer1"),
+                item: Some(String::from("item1")),
                 special_fields: SpecialFields::new(),
-            };
-        let value = protobuf::Message::write_to_bytes(&purchase).unwrap();
+            })
+            .into(),
+        };
+        let customer_cloud_event = protos::customer_event::CustomerCloudEvent {
+            special_fields: SpecialFields::new(),
+            event: Some(
+                protos::customer_event::customer_cloud_event::Event::Purchase(purchase.clone()),
+            ),
+        };
+        let value = protobuf::Message::write_to_bytes(&customer_cloud_event).unwrap();
         producer.send(&Record::from_value(topic, value)).unwrap();
         println_f!("Produced message: {purchase.id}");
         thread::sleep(Duration::from_secs(3)); // Simulating work
