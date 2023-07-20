@@ -29,3 +29,8 @@ Start producer & subscriber services
 ```bash
 npx nf start
 ```
+
+## Links
+
+- <https://github.com/cloudevents/spec/blob/main/cloudevents/formats/cloudevents.proto>
+- <https://docs.rs/protobuf-codegen/latest/protobuf_codegen/>
