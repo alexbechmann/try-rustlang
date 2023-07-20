@@ -9,7 +9,7 @@ pub mod protos;
 
 #[cfg(test)]
 mod tests {
-    use protobuf::{Message, MessageField, SpecialFields};
+    use protobuf::{Message, SpecialFields};
 
     use super::*;
 

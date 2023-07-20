@@ -24,6 +24,6 @@ test:
 	cd apps/consumer && cargo test
 
 fix: 
-	cd libs/utils && cargo fix
-	cd apps/producer && cargo fix
-	cd apps/consumer && cargo fix
+	cd libs/utils && cargo fix --allow-dirty
+	cd apps/producer && cargo fix --allow-dirty
+	cd apps/consumer && cargo fix --allow-dirty

@@ -35,11 +35,9 @@ fn handle_event(bytes: &[u8]) {
         Some(event) => match event {
             protos::customer_event::customer_cloud_event::Event::Purchase(purchase_event) => {
                 println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
-                assert_eq!(purchase_event.id, "id");
-                assert_eq!(purchase_event.data.amount, 12.0);
             }
-            _ => panic!(),
+            _ => panic!("Wrong type"),
         },
-        _ => panic!(),
+        _ => panic!("Wrong type"),
     }
 }

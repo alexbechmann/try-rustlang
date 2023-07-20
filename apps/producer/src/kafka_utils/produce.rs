@@ -12,7 +12,7 @@ pub fn produce() {
 
     for i in 0..i32::MAX {
         let purchase = protos::purchase::PurchaseCloudEvent {
-            id: String::from("id"),
+            id: String::from(format_f!("id-{i}")),
             source: String::from("try-rustlang-producer"),
             spec_version: String::from("0.1.0"),
             special_fields: SpecialFields::new(),
@@ -20,7 +20,7 @@ pub fn produce() {
             time: String::from("time"),
             data: Some(protos::purchase::purchase_cloud_event::Data {
                 amount: 12.0,
-                customer_id: String::from("customer1"),
+                customer_id: String::from(format_f!("customer-{i}")),
                 item: Some(String::from("item1")),
                 special_fields: SpecialFields::new(),
             })
