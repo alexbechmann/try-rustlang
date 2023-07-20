@@ -76,13 +76,12 @@ mod tests {
                     time: protobuf::MessageField::some(
                         protobuf::well_known_types::timestamp::Timestamp::new(),
                     ),
-                    data: Some(purchase::purchase_cloud_event::Data {
+                    data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
                         amount: 12.0,
                         customer_id: String::from("customer1"),
                         item: Some(String::from("item1")),
                         special_fields: SpecialFields::new(),
-                    })
-                    .into(),
+                    }),
                 },
             )),
         };
