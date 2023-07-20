@@ -14,6 +14,8 @@ fn main() {
         // .input("src/protos/banana.proto")
         // Specify output directory relative to Cargo output directory.
         .cargo_out_dir("protos")
-        .out_dir("src/protos")
+        // .out_dir("src/protos")
         .run_from_script();
+
+    println!("Codegen done!")
 }
