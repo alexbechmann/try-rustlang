@@ -6,7 +6,7 @@ import "purchase.proto";
 import "page-view.proto";  
 
 message CustomerCloudEvent {  
-  oneof event {   
+  oneof payload {   
     PurchaseCloudEvent purchase = 5;
     PageViewCloudEvent page_view = 6;
   }

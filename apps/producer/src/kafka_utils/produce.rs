@@ -28,8 +28,8 @@ pub fn produce() {
         };
         let customer_cloud_event = protos::customer_event::CustomerCloudEvent {
             special_fields: SpecialFields::new(),
-            event: Some(
-                protos::customer_event::customer_cloud_event::Event::Purchase(purchase.clone()),
+            payload: Some(
+                protos::customer_event::customer_cloud_event::Payload::Purchase(purchase.clone()),
             ),
         };
         let value = protobuf::Message::write_to_bytes(&customer_cloud_event).unwrap();

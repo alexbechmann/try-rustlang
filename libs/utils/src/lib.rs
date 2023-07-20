@@ -66,8 +66,8 @@ mod tests {
     fn proto_gen() {
         let purchase = protos::customer_event::CustomerCloudEvent {
             special_fields: SpecialFields::new(),
-            event: Some(
-                protos::customer_event::customer_cloud_event::Event::Purchase(
+            payload: Some(
+                protos::customer_event::customer_cloud_event::Payload::Purchase(
                     protos::purchase::PurchaseCloudEvent {
                         id: String::from("id"),
                         source: String::from("source"),
@@ -93,9 +93,9 @@ mod tests {
             protos::customer_event::CustomerCloudEvent::parse_from_bytes(&serialized.unwrap())
                 .unwrap();
 
-        match deserialized_customer_event.event {
+        match deserialized_customer_event.payload {
             Some(event) => match event {
-                protos::customer_event::customer_cloud_event::Event::Purchase(purchase) => {
+                protos::customer_event::customer_cloud_event::Payload::Purchase(purchase) => {
                     assert_eq!(purchase.id, "id");
                     assert_eq!(purchase.data.amount, 12.0);
                 }

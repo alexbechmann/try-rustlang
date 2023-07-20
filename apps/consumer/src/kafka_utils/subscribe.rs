@@ -31,9 +31,9 @@ fn handle_event(bytes: &[u8]) {
     let customer_cloud_event =
         protos::customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
 
-    match customer_cloud_event.event {
+    match customer_cloud_event.payload {
         Some(event) => match event {
-            protos::customer_event::customer_cloud_event::Event::Purchase(purchase_event) => {
+            protos::customer_event::customer_cloud_event::Payload::Purchase(purchase_event) => {
                 println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
             }
             _ => panic!("Wrong type"),
