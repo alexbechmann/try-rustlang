@@ -73,8 +73,12 @@ mod tests {
                         source: String::from("source"),
                         spec_version: String::from("0.1.0"),
                         special_fields: SpecialFields::new(),
-                        type_: protos::purchase::purchase_cloud_event::Type::PURCHASE.into(),
-                        time: String::from("time"),
+                        type_:
+                            protos::purchase::purchase_cloud_event::Type::EXAMPLE_CUSTOMER_PURCHASE
+                                .into(),
+                        time: protobuf::MessageField::some(
+                            protobuf::well_known_types::timestamp::Timestamp::new(),
+                        ),
                         data: Some(protos::purchase::purchase_cloud_event::Data {
                             amount: 12.0,
                             customer_id: String::from("customer1"),

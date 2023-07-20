@@ -2,21 +2,23 @@ syntax = "proto3";
 
 package example.customer;
 
+import "google/protobuf/timestamp.proto";
+
 message PageViewCloudEvent {
   string id = 1;
   string source = 2; // URI-reference
   string spec_version = 3;
-  string time = 4; // ISO 8601
+  google.protobuf.Timestamp time = 4;
+  Type type = 5;
+  Data data = 6;
 
   enum Type {
-    PAGE_VIEW = 0;
+    EXAMPLE_CUSTOMER_PAGE_VIEW = 0;
   }
-  Type type = 5;
 
   message Data {
     string url = 1;
     bool is_special = 2;
     string customer_id = 3;
   }
-  Data data = 6;
 }

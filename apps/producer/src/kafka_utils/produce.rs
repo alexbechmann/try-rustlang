@@ -16,8 +16,10 @@ pub fn produce() {
             source: String::from("try-rustlang-producer"),
             spec_version: String::from("0.1.0"),
             special_fields: SpecialFields::new(),
-            type_: protos::purchase::purchase_cloud_event::Type::PURCHASE.into(),
-            time: String::from("time"),
+            type_: protos::purchase::purchase_cloud_event::Type::EXAMPLE_CUSTOMER_PURCHASE.into(),
+            time: protobuf::MessageField::some(
+                protobuf::well_known_types::timestamp::Timestamp::new(),
+            ),
             data: protobuf::MessageField::some(protos::purchase::purchase_cloud_event::Data {
                 amount: 12.0,
                 customer_id: String::from(format_f!("customer-{i}")),
