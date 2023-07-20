@@ -1,11 +1,11 @@
 extern crate serde;
+include!(concat!(env!("OUT_DIR"), "/protos/mod.rs"));
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
 pub mod message;
-pub mod protos;
 
 #[cfg(test)]
 mod tests {
@@ -64,36 +64,38 @@ mod tests {
 
     #[test]
     fn proto_gen() {
-        let purchase = protos::customer_event::CustomerCloudEvent {
-            id: String::from("id"),
-            source: String::from("source"),
-            spec_version: String::from("0.1.0"),
-            type_: protos::customer_event::customer_cloud_event::Type::PURCHASE.into(),
-            data: Some(
-                protos::customer_event::customer_cloud_event::Data::Purchase(
-                    protos::purchase::Purchase {
+        let purchase = customer_event::CustomerCloudEvent {
+            special_fields: SpecialFields::new(),
+            payload: Some(customer_event::customer_cloud_event::Payload::Purchase(
+                purchase::PurchaseCloudEvent {
+                    id: String::from("id"),
+                    source: String::from("source"),
+                    spec_version: String::from("0.1.0"),
+                    special_fields: SpecialFields::new(),
+                    type_: purchase::purchase_cloud_event::Type::EXAMPLE_CUSTOMER_PURCHASE.into(),
+                    time: protobuf::MessageField::some(
+                        protobuf::well_known_types::timestamp::Timestamp::new(),
+                    ),
+                    data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
                         amount: 12.0,
                         customer_id: String::from("customer1"),
                         item: Some(String::from("item1")),
                         special_fields: SpecialFields::new(),
-                    },
-                ),
-            ),
-            special_fields: SpecialFields::new(),
+                    }),
+                },
+            )),
         };
         let serialized = protobuf::Message::write_to_bytes(&purchase);
         assert!(serialized.is_ok());
 
         let deserialized_customer_event =
-            protos::customer_event::CustomerCloudEvent::parse_from_bytes(&serialized.unwrap())
-                .unwrap();
+            customer_event::CustomerCloudEvent::parse_from_bytes(&serialized.unwrap()).unwrap();
 
-        assert_eq!(deserialized_customer_event.id, "id");
-
-        match deserialized_customer_event.data {
-            Some(data) => match data {
-                protos::customer_event::customer_cloud_event::Data::Purchase(purchase) => {
-                    assert_eq!(purchase.amount, 12.0)
+        match deserialized_customer_event.payload {
+            Some(event) => match event {
+                customer_event::customer_cloud_event::Payload::Purchase(purchase) => {
+                    assert_eq!(purchase.id, "id");
+                    assert_eq!(purchase.data.amount, 12.0);
                 }
                 _ => panic!(),
             },

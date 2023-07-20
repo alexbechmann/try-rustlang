@@ -1,10 +1,25 @@
 syntax = "proto3";
 
-package io.confluent.developer.proto;
-option java_outer_classname = "PurchaseProto";
+package example.customer;
 
-message Purchase {
-  optional string item = 1;
-  double amount = 2;
-  string customer_id = 3;
+import "google/protobuf/timestamp.proto";
+
+message PurchaseCloudEvent {
+  string id = 1;
+  string source = 2; // URI-reference
+  string spec_version = 3;
+  google.protobuf.Timestamp time = 4;
+  Type type = 5;
+  Data data = 6;
+
+  enum Type {
+    EXAMPLE_CUSTOMER_PURCHASE = 0;
+  }
+
+  message Data {
+    optional string item = 1;
+    double amount = 2;
+    string customer_id = 3;
+  }
 }
+

@@ -1,25 +1,13 @@
 syntax = "proto3";
 
-package io.confluent.developer.proto;
+package example.customer;
 
 import "purchase.proto";
 import "page-view.proto";  
 
-option java_outer_classname = "CustomerEventProto";
-
 message CustomerCloudEvent {  
-  string id = 1;
-  string source = 2; // URI-reference
-  string spec_version = 3;
-
-  enum Type {
-    PURCHASE = 0;
-    PAGE_VIEW = 1;
-  }
-  Type type = 4;
-
-  oneof data {   
-    Purchase purchase = 5;
-    PageView page_view = 6;
+  oneof payload {   
+    PurchaseCloudEvent purchase = 5;
+    PageViewCloudEvent page_view = 6;
   }
 }

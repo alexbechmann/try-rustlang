@@ -1,10 +1,24 @@
 syntax = "proto3";
 
-package io.confluent.developer.proto;
-option java_outer_classname = "PageViewProto";
+package example.customer;
 
-message PageView {
-  string url = 1;
-  bool is_special = 2;
-  string customer_id = 3;
+import "google/protobuf/timestamp.proto";
+
+message PageViewCloudEvent {
+  string id = 1;
+  string source = 2; // URI-reference
+  string spec_version = 3;
+  google.protobuf.Timestamp time = 4;
+  Type type = 5;
+  Data data = 6;
+
+  enum Type {
+    EXAMPLE_CUSTOMER_PAGE_VIEW = 0;
+  }
+
+  message Data {
+    string url = 1;
+    bool is_special = 2;
+    string customer_id = 3;
+  }
 }

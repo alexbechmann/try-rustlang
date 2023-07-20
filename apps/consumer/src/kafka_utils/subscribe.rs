@@ -1,8 +1,8 @@
 use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
+use utils::customer_event;
 
-use utils::{protos};
 
 pub fn subscribe() {
     println!("subscribe");
@@ -28,16 +28,16 @@ pub fn subscribe() {
 }
 
 fn handle_event(bytes: &[u8]) {
-    let event = protos::customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
-    println_f!("Received event: {event.id} from {event.source}");
+    let customer_cloud_event =
+        customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
 
-    match event.data {
-        Some(data) => match data {
-            protos::customer_event::customer_cloud_event::Data::Purchase(purchase) => {
-                println_f!("Purchase received with amount {purchase.amount}")
+    match customer_cloud_event.payload {
+        Some(event) => match event {
+            customer_event::customer_cloud_event::Payload::Purchase(purchase_event) => {
+                println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
             }
-            _ => panic!(),
+            _ => panic!("Wrong type"),
         },
-        _ => panic!(),
+        _ => panic!("Wrong type"),
     }
 }

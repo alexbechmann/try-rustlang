@@ -6,6 +6,8 @@ install:
 	cd apps/producer && cargo build
 	cd apps/consumer && cargo build
 
+build: install
+
 codegen:
 	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
@@ -22,3 +24,8 @@ test:
 	cd libs/utils && cargo test
 	cd apps/producer && cargo test
 	cd apps/consumer && cargo test
+
+fix: 
+	cd libs/utils && cargo fix --allow-dirty
+	cd apps/producer && cargo fix --allow-dirty
+	cd apps/consumer && cargo fix --allow-dirty
