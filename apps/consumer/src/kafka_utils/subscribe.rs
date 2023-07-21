@@ -3,7 +3,6 @@ use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
 use utils::customer_event;
 
-
 pub fn subscribe() {
     println!("subscribe");
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
@@ -31,13 +30,10 @@ fn handle_event(bytes: &[u8]) {
     let customer_cloud_event =
         customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
 
-    match customer_cloud_event.payload {
-        Some(event) => match event {
-            customer_event::customer_cloud_event::Payload::Purchase(purchase_event) => {
-                println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
-            }
-            _ => panic!("Wrong type"),
-        },
-        _ => panic!("Wrong type"),
+    match customer_cloud_event.payload.unwrap() {
+        customer_event::customer_cloud_event::Payload::Purchase(purchase_event) => {
+            println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
+        }
+        _ => panic!("Unhandled type"),
     }
 }
