@@ -1,14 +1,17 @@
 extern crate serde;
 include!(concat!(env!("OUT_DIR"), "/protos/mod.rs"));
 
+pub mod convert_chrono_to_timestamp;
+pub mod message;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
 
-pub mod message;
-
 #[cfg(test)]
 mod tests {
+    use chrono::Utc;
+    use convert_chrono_to_timestamp::convert_chrono_to_timestamp;
     use protobuf::{Message, SpecialFields};
 
     use super::*;
@@ -73,9 +76,7 @@ mod tests {
                     spec_version: String::from("0.1.0"),
                     special_fields: SpecialFields::new(),
                     type_: purchase::purchase_cloud_event::Type::EXAMPLE_CUSTOMER_PURCHASE.into(),
-                    time: protobuf::MessageField::some(
-                        protobuf::well_known_types::timestamp::Timestamp::new(),
-                    ),
+                    time: protobuf::MessageField::some(convert_chrono_to_timestamp(&Utc::now())),
                     data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
                         amount: 12.0,
                         customer_id: String::from("customer1"),
@@ -91,14 +92,11 @@ mod tests {
         let deserialized_customer_event =
             customer_event::CustomerCloudEvent::parse_from_bytes(&serialized.unwrap()).unwrap();
 
-        match deserialized_customer_event.payload {
-            Some(event) => match event {
-                customer_event::customer_cloud_event::Payload::Purchase(purchase) => {
-                    assert_eq!(purchase.id, "id");
-                    assert_eq!(purchase.data.amount, 12.0);
-                }
-                _ => panic!(),
-            },
+        match deserialized_customer_event.payload.unwrap() {
+            customer_event::customer_cloud_event::Payload::Purchase(purchase) => {
+                assert_eq!(purchase.id, "id");
+                assert_eq!(purchase.data.amount, 12.0);
+            }
             _ => panic!(),
         }
     }

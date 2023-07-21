@@ -1,4 +1,5 @@
 use crate::config::config;
+use chrono;
 use kafka::producer::{Producer, Record};
 use protobuf::SpecialFields;
 use std::{thread, time::Duration};
@@ -19,7 +20,7 @@ pub fn produce() {
             special_fields: SpecialFields::new(),
             type_: purchase::purchase_cloud_event::Type::EXAMPLE_CUSTOMER_PURCHASE.into(),
             time: protobuf::MessageField::some(
-                protobuf::well_known_types::timestamp::Timestamp::new(),
+                utils::convert_chrono_to_timestamp::convert_chrono_to_timestamp(&chrono::Utc::now()),
             ),
             data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
                 amount: 12.0,
