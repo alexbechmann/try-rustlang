@@ -11,7 +11,7 @@
       "program": "${workspaceFolder}/apps/producer/target/debug/producer",
       "args": [],
       "cwd": "${workspaceFolder}/apps/producer",
-      "preLaunchTask": "build-producer"
+      "preLaunchTask": "buildproducer"
     },
     {
       "name": "Producer attach",
@@ -27,7 +27,7 @@
       "program": "${workspaceFolder}/apps/consumer/target/debug/consumer",
       "args": [],
       "cwd": "${workspaceFolder}/apps/consumer",
-      "preLaunchTask": "build-consumer"
+      "preLaunchTask": "buildconsumer"
     },
     {
       "name": "Consumer attach",
