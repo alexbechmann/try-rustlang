@@ -5,6 +5,14 @@ FROM mcr.microsoft.com/devcontainers/base:bullseye
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    libssl-dev \
+    libsasl2-dev \
+    libzstd-dev \
+    zlib1g-dev \
+    pkg-config
 
 # Install NodeJS
 RUN apt-get update && apt-get install \
@@ -20,8 +28,8 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
   && chown -R vscode /commandhistory \
   && echo $SNIPPET >> "/home/vscode/.bashrc"
 
-RUN apt-get update && apt install libssl-dev -y
-RUN apt-get update && apt-get install pkg-config -y
+# RUN apt-get update && apt install libssl-dev -y
+# RUN apt-get update && apt-get install pkg-config -y
 RUN npm i -g quicktype
 RUN npm i -g foreman
 
