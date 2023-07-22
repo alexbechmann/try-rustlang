@@ -6,7 +6,7 @@
       "command": "build",
       "problemMatcher": ["$rustc"],
       "group": "build",
-      "label": "build-producer",
+      "label": "buildproducer",
       "options": {
         "cwd": "${workspaceFolder}/apps/producer"
       }
@@ -16,7 +16,7 @@
       "command": "build",
       "problemMatcher": ["$rustc"],
       "group": "build",
-      "label": "build-consumer",
+      "label": "buildconsumer",
       "options": {
         "cwd": "${workspaceFolder}/apps/consumer"
       }
