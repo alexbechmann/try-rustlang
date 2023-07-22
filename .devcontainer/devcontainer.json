@@ -17,12 +17,17 @@
       "enableNonRootDocker": "true",
       "moby": "true"
     }
-  }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["esbenp.prettier-vscode", "vscode-icons-team.vscode-icons", "github.copilot", "ms-vsliveshare.vsliveshare"]
+    }
+  },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "docker --version",
+  "postCreateCommand": "make codegen && make install && cargo install cargo-watch"
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"

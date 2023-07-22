@@ -5,7 +5,6 @@ FROM mcr.microsoft.com/devcontainers/base:bullseye
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Install NodeJS
 RUN apt-get update && apt-get install \
@@ -21,4 +20,12 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
   && chown -R vscode /commandhistory \
   && echo $SNIPPET >> "/home/vscode/.bashrc"
 
+RUN apt-get update && apt install libssl-dev -y
+RUN apt-get update && apt-get install pkg-config -y
+RUN npm i -g quicktype
+RUN npm i -g foreman
+
 USER vscode
+
+# Install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y

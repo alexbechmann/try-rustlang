@@ -14,21 +14,33 @@
 - CodeLLDB <https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb> (vadimcn.vscode-lldb) – on macOS/Linux
 - NodeJS (For codegen) <https://nodejs.org/en/download/>
 
+## Preparation
+
+- Install [ms-vscode-remote.remote-containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
+- **If using SSH to clone**: Add ssh key to SSH agent <https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials>
+  ```
+  ssh-add ~/.ssh/id_rsa
+  ```
+- Open repo in vscode devcontainer with:
+
+  - CTRL+SHIFT+P -> Dev-Containers: Clone Repository in Named Volume
+  - Paste repo HTTPS or SSH url
+  - Choose volume name
+  - Open terminal inside vscode to get a shell inside devcontainer
+
 ## Development
 
-### Setup
-
-Setup kafka in docker containers and topics.
+### Start producer & subscriber services
 
 ```bash
-make init
+nf start
 ```
 
-Start producer & subscriber services
-
+### Test
 ```bash
-npx nf start
+make test
 ```
+
 
 ## Links
 
