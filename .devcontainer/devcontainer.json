@@ -20,7 +20,14 @@
   },
   "customizations": {
     "vscode": {
-      "extensions": ["esbenp.prettier-vscode", "vscode-icons-team.vscode-icons", "github.copilot", "ms-vsliveshare.vsliveshare"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "vscode-icons-team.vscode-icons",
+        "github.copilot",
+        "ms-vsliveshare.vsliveshare",
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb"
+      ]
     }
   },
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
