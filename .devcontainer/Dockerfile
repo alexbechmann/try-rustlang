@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/devcontainers/base:bullseye
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Install NodeJS
 RUN apt-get update && apt-get install \
@@ -14,3 +14,11 @@ RUN apt-get update && apt-get install \
   -y
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install nodejs -y
+
+RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+  && mkdir /commandhistory \
+  && touch /commandhistory/.bash_history \
+  && chown -R vscode /commandhistory \
+  && echo $SNIPPET >> "/home/vscode/.bashrc"
+
+USER vscode

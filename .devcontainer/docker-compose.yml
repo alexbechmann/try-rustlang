@@ -1,20 +1,21 @@
-version: '3'
+version: "3"
 
 services:
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
 
     volumes:
       # Forwards the local Docker socket to the container.
-      - /var/run/docker.sock:/var/run/docker-host.sock 
+      - /var/run/docker.sock:/var/run/docker-host.sock
       # Update this to wherever you want VS Code to mount the folder of your project
       - ../..:/workspaces:cached
+      - commandhistory:/commandhistory
 
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /usr/local/share/docker-init.sh
-    command: sleep infinity 
+    command: sleep infinity
 
     # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
     # cap_add:
@@ -22,5 +23,26 @@ services:
     # security_opt:
     #   - seccomp:unconfined
 
-    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+volumes:
+  commandhistory:
