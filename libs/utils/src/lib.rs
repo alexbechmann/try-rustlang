@@ -2,6 +2,7 @@ extern crate serde;
 include!(concat!(env!("OUT_DIR"), "/protos/mod.rs"));
 
 pub mod convert_chrono_to_timestamp;
+pub mod kafka;
 pub mod message;
 
 pub fn add(left: usize, right: usize) -> usize {

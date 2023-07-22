@@ -9,7 +9,7 @@ install:
 build: install
 
 codegen:
-	npx -y quicktype@23.0.59 -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
+	quicktype -s schema ./specs/message.jsonschema.json -o ./libs/utils/src/message.rs  --visibility public
 
 topics:
 	docker-compose exec kafka kafka-topics --create --topic messages --bootstrap-server localhost:9092 --if-not-exists

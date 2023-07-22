@@ -13,10 +13,16 @@ use dotenv::dotenv;
 use std::thread;
 use utils::add;
 
-fn main() {
+use crate::config::config::get_config;
+
+#[tokio::main]
+async fn main() {
     dotenv().ok();
     let source = "rust";
     println!("source is {source}");
+
+    let config = get_config();
+    utils::kafka::create_topics::create_topics(&config.kafka_brokers.to_string()).await;
 
     let produce_thread = thread::spawn(move || {
         kafka_utils::produce::produce();
