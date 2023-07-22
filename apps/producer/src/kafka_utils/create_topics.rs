@@ -2,7 +2,6 @@ use crate::config::config::CONFIG;
 use rdkafka::{
     admin::{AdminClient, AdminOptions, NewTopic, TopicReplication},
     client::DefaultClientContext,
-    config::{FromClientConfig, FromClientConfigAndContext},
     ClientConfig,
 };
 
