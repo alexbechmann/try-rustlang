@@ -1144,6 +1144,7 @@ dependencies = [
  "protobuf",
  "protobuf-codegen",
  "protoc-bin-vendored",
+ "rdkafka",
  "serde",
  "serde_json",
 ]
