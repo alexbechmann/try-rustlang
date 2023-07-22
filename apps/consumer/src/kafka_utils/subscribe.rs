@@ -6,10 +6,10 @@ use utils::customer_event;
 pub fn subscribe() {
     println!("subscribe");
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
-    let topic = "messages";
+    let topic = "messages".to_string();
     let group_id = "my-group".to_string();
     let mut consumer = Consumer::from_hosts(brokers)
-        .with_topic(topic.to_owned())
+        .with_topic(topic)
         .with_group(group_id)
         .with_fallback_offset(FetchOffset::Latest)
         .create()
