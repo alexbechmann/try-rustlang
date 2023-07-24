@@ -1,5 +1,3 @@
-#[macro_use]
-extern crate fstrings;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
@@ -19,7 +17,7 @@ use crate::config::config::get_config;
 async fn main() {
     dotenv().ok();
     let source = "rust";
-    println_f!("source is {source}");
+    println!("source is {source}");
 
     let config = get_config();
     utils::kafka::create_topics::create_topics(&config.kafka_brokers.to_string()).await;
@@ -29,7 +27,7 @@ async fn main() {
     });
 
     let result = add(1, 2);
-    println_f!("result is {result}");
+    println!("result is {result}");
 
     subscribe_thread.join().unwrap();
 }

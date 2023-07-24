@@ -1,5 +1,3 @@
-#[macro_use]
-extern crate fstrings;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
