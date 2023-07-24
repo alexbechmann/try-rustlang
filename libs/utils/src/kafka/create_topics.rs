@@ -7,7 +7,6 @@ use rdkafka::{
 pub async fn create_topics(kafka_brokers: &str) {
     println!("Creating topics...");
     let topics = vec![NewTopic::new("messages", 1, TopicReplication::Fixed(1))];
-
     let admin_options = AdminOptions::default();
     let admin_client: AdminClient<DefaultClientContext> = ClientConfig::new()
         .set("bootstrap.servers", kafka_brokers.to_string())

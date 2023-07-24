@@ -32,7 +32,16 @@ fn handle_event(bytes: &[u8]) {
 
     match customer_cloud_event.payload.unwrap() {
         customer_event::customer_cloud_event::Payload::Purchase(purchase_event) => {
-            println_f!("Received event: {purchase_event.id} from {purchase_event.source}");
+            println!(
+                "Received purchase event: {} from {}",
+                purchase_event.id, purchase_event.source
+            );
+        }
+        customer_event::customer_cloud_event::Payload::PageView(page_view_event) => {
+            println!(
+                "Received event: {} from {}",
+                page_view_event.id, page_view_event.source
+            )
         }
         _ => panic!("Unhandled type"),
     }
