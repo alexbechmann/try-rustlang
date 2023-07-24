@@ -7,11 +7,10 @@ extern crate utils;
 mod config;
 mod kafka_utils;
 
+use crate::config::config::CONFIG;
 use dotenv::dotenv;
 use std::thread;
 use utils::add;
-
-use crate::config::config::get_config;
 
 #[tokio::main]
 async fn main() {
@@ -19,8 +18,7 @@ async fn main() {
     let source = "rust";
     println!("source is {source}");
 
-    let config = get_config();
-    utils::kafka::create_topics::create_topics(config.kafka_brokers).await;
+    utils::kafka::create_topics::create_topics(&CONFIG.kafka_brokers).await;
 
     let subscribe_thread = thread::spawn(move || {
         kafka_utils::subscribe::subscribe();
