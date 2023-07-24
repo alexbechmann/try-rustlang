@@ -6,12 +6,12 @@ use rdkafka::{
 
 use crate::kafka::topics::MESSAGES_TOPIC;
 
-pub async fn create_topics(kafka_brokers: &str) {
+pub async fn create_topics(kafka_brokers: impl Into<String>) {
     println!("Creating topics...");
     let topics = vec![NewTopic::new(MESSAGES_TOPIC, 1, TopicReplication::Fixed(1))];
     let admin_options = AdminOptions::default();
     let admin_client: AdminClient<DefaultClientContext> = ClientConfig::new()
-        .set("bootstrap.servers", kafka_brokers.to_string())
+        .set("bootstrap.servers", kafka_brokers.into())
         .set("message.timeout.ms", "5000")
         .create()
         .unwrap();
