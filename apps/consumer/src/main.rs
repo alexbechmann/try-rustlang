@@ -1,10 +1,12 @@
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
+extern crate serde;
 extern crate serde_json;
 extern crate utils;
 
 mod config;
+mod data_store;
 mod kafka_utils;
 
 use crate::config::config::CONFIG;

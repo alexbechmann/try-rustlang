@@ -1,6 +1,8 @@
 use crate::config::config;
+use crate::data_store::store;
 use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
+use tokio::runtime::Runtime;
 use utils::{customer_event, kafka::topics::MESSAGES_TOPIC};
 
 pub fn subscribe() {
@@ -17,7 +19,8 @@ pub fn subscribe() {
     loop {
         for ms in consumer.poll().unwrap().iter() {
             for m in ms.messages() {
-                handle_event(m.value);
+                let rt = Runtime::new().unwrap();
+                rt.block_on(handle_event(m.value));
             }
             consumer.consume_messageset(ms).unwrap();
         }
@@ -25,7 +28,7 @@ pub fn subscribe() {
     }
 }
 
-fn handle_event(bytes: &[u8]) {
+async fn handle_event(bytes: &[u8]) {
     let customer_cloud_event =
         customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
 
@@ -35,6 +38,10 @@ fn handle_event(bytes: &[u8]) {
                 "Received purchase event: {} from {}",
                 purchase_event.id, purchase_event.source
             );
+            match store::save_something().await {
+                Ok(_) => println!("Saved to surrealdb"),
+                Err(e) => println!("Error saving to surrealdb: {}", e),
+            }
         }
         customer_event::customer_cloud_event::Payload::PageView(page_view_event) => {
             println!(
