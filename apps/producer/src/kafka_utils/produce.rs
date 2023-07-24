@@ -4,11 +4,11 @@ use kafka::producer::{Producer, Record};
 use protobuf::SpecialFields;
 use std::{thread, time::Duration};
 use utils::customer_event;
+use utils::kafka::topics::MESSAGES_TOPIC;
 use utils::purchase;
 
 pub fn produce() {
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
-    let topic = "messages";
     let mut producer = Producer::from_hosts(brokers).create().unwrap();
     println!("Starting producer...");
 
@@ -36,7 +36,9 @@ pub fn produce() {
             )),
         };
         let value = protobuf::Message::write_to_bytes(&customer_cloud_event).unwrap();
-        producer.send(&Record::from_value(topic, value)).unwrap();
+        producer
+            .send(&Record::from_value(MESSAGES_TOPIC, value))
+            .unwrap();
         println!("Produced message: {}", purchase_event.id);
         thread::sleep(Duration::from_secs(3)); // Simulating work
     }

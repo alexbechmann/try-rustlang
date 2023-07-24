@@ -1,2 +1,2 @@
 dev:
-	cargo watch --watch ./src -x run
+	cargo watch --watch ./src --watch ../../libs/utils -x run

@@ -1,15 +1,14 @@
 use crate::config::config;
 use kafka::consumer::{Consumer, FetchOffset};
 use protobuf::Message;
-use utils::customer_event;
+use utils::{customer_event, kafka::topics::MESSAGES_TOPIC};
 
 pub fn subscribe() {
     println!("subscribe");
     let brokers = vec![config::CONFIG.kafka_brokers.to_string()];
-    let topic = "messages".to_string();
     let group_id = "my-group".to_string();
     let mut consumer = Consumer::from_hosts(brokers)
-        .with_topic(topic)
+        .with_topic(MESSAGES_TOPIC.to_string())
         .with_group(group_id)
         .with_fallback_offset(FetchOffset::Latest)
         .create()
