@@ -20,7 +20,7 @@ async fn main() {
     println!("source is {source}");
 
     let config = get_config();
-    utils::kafka::create_topics::create_topics(&config.kafka_brokers.to_string()).await;
+    utils::kafka::create_topics::create_topics(config.kafka_brokers).await;
 
     let produce_thread = thread::spawn(move || {
         kafka_utils::produce::produce();
