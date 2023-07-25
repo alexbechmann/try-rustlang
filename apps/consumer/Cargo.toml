@@ -13,3 +13,8 @@ lazy_static = "1.4.0"
 utils = { path = "../../libs/utils" }
 protobuf = "3.2.0"
 tokio = { version = "1.29.0", features = ["macros", "rt-multi-thread"] }
+mongodb = "2.1"
+bson = { version = "2", features = ["chrono-0_4"] } # Needed for using chrono datetime in doc
+chrono = "0.4.26"
+serde = "1.0.175"
+async-trait = "0.1.72"

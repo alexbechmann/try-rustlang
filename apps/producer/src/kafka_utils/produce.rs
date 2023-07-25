@@ -24,7 +24,7 @@ pub fn produce() {
             ),
             data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
                 amount: 12.0,
-                customer_id: String::from(format!("customer-{i}")),
+                customer_id: String::from(format!("customer1")),
                 item: Some(String::from("item1")),
                 special_fields: SpecialFields::new(),
             }),

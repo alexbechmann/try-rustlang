@@ -6,11 +6,13 @@ extern crate utils;
 
 mod config;
 mod kafka_utils;
+mod store;
 
-use crate::config::config::CONFIG;
 use dotenv::dotenv;
 use std::thread;
 use utils::add;
+
+use crate::config::config::CONFIG;
 
 #[tokio::main]
 async fn main() {
