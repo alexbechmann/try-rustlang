@@ -18,3 +18,4 @@ bson = { version = "2", features = ["chrono-0_4"] } # Needed for using chrono da
 chrono = "0.4.26"
 serde = "1.0.175"
 async-trait = "0.1.72"
+mockall = "0.11.4"

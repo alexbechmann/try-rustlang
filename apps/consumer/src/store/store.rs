@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use bson::oid::ObjectId;
 use chrono::Utc;
+use mockall::automock;
 use mongodb::{
     bson::doc,
     options::{ClientOptions, ResolverConfig},
@@ -20,6 +21,7 @@ pub struct Balance {
     updated_at: chrono::DateTime<Utc>,
 }
 
+#[automock]
 #[async_trait]
 pub trait Store {
     async fn update_balance(
