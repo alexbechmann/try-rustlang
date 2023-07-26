@@ -2,15 +2,36 @@ extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
 extern crate serde_json;
+extern crate shaku;
+extern crate shaku_derive;
 extern crate utils;
 
 mod config;
 mod kafka_utils;
+mod store;
 
-use crate::config::config::CONFIG;
 use dotenv::dotenv;
+use kafka_utils::kafka_handler::KafkaHandler;
+use shaku::{module, HasComponent};
 use std::thread;
 use utils::add;
+
+use crate::{
+    config::config::CONFIG, kafka_utils::kafka_handler::KafkaHandlerImpl, store::store::StoreImpl,
+};
+
+module! {
+    AppModule {
+        components = [StoreImpl, KafkaHandlerImpl],
+        providers = []
+    }
+}
+
+lazy_static! {
+    static ref APP_MODULE: AppModule = {
+        return AppModule::builder().build();
+    };
+}
 
 #[tokio::main]
 async fn main() {
@@ -21,7 +42,8 @@ async fn main() {
     utils::kafka::create_topics::create_topics(&CONFIG.kafka_brokers).await;
 
     let subscribe_thread = thread::spawn(move || {
-        kafka_utils::subscribe::subscribe();
+        let kafka_handler: &dyn KafkaHandler = APP_MODULE.resolve_ref();
+        kafka_handler.start_consuming();
     });
 
     let result = add(1, 2);

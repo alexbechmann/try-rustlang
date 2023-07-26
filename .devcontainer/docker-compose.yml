@@ -8,6 +8,7 @@ services:
 
     environment:
       KAFKA_BROKERS: kafka:9092
+      MONGO_URI: mongodb://root:9TeJ6QjeaFqwQCGJiL9VBiK@mongo:27017/?authSource=admin
 
     volumes:
       # Forwards the local Docker socket to the container.
@@ -50,6 +51,28 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
+  mongo:
+    image: mongo:6.0
+    volumes:
+      - mongovolume:/data/db
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 9TeJ6QjeaFqwQCGJiL9VBiK
+
+  mongoexpress:
+    image: mongo-express
+    ports:
+      - "8085:8081"
+    restart: always
+    links:
+      - mongo
+    environment:
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_URL=mongodb://root:9TeJ6QjeaFqwQCGJiL9VBiK@mongo:27017/?authSource=admin
+
 volumes:
   commandhistory:
   cargo:
+  mongovolume:

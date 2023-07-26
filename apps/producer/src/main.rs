@@ -20,12 +20,17 @@ async fn main() {
 
     utils::kafka::create_topics::create_topics(&CONFIG.kafka_brokers).await;
 
-    let produce_thread = thread::spawn(move || {
-        kafka_utils::produce::produce();
+    let produce_purchase_events_thread = thread::spawn(move || {
+        kafka_utils::produce::start_producing_purchase_events();
+    });
+
+    let produce_page_view_events_thread = thread::spawn(move || {
+        kafka_utils::produce::start_producing_page_view_events();
     });
 
     let result = add(1, 2);
     println!("result is {result}");
 
-    produce_thread.join().unwrap();
+    produce_purchase_events_thread.join().unwrap();
+    produce_page_view_events_thread.join().unwrap();
 }
