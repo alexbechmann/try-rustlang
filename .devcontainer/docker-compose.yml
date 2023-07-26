@@ -52,7 +52,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   mongo:
-    image: velux.jfrog.io/docker-dev/mongo:6.0
+    image: mongo:6.0
     volumes:
       - mongovolume:/data/db
     ports:
@@ -62,7 +62,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 9TeJ6QjeaFqwQCGJiL9VBiK
 
   mongoexpress:
-    image: velux.jfrog.io/docker-dev/mongo-express
+    image: mongo-express
     ports:
       - "8085:8081"
     restart: always

@@ -57,7 +57,7 @@ async fn handle_event(bytes: &[u8], store: &impl Store) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::store::store::{MockStore, Store};
+    use crate::store::store::{MockStore};
     use chrono::Utc;
     use protobuf::SpecialFields;
     use utils::{convert_chrono_to_timestamp::convert_chrono_to_timestamp, page_view, purchase};
@@ -95,7 +95,7 @@ mod tests {
             )),
         };
         let serialized = protobuf::Message::write_to_bytes(&purchase).unwrap();
-        let result = handle_event(&serialized, &store).await;
+        let _result = handle_event(&serialized, &store).await;
         assert!(true);
     }
 
@@ -133,7 +133,7 @@ mod tests {
             )),
         };
         let serialized = protobuf::Message::write_to_bytes(&page_view_event).unwrap();
-        let result = handle_event(&serialized, &store).await;
+        let _result = handle_event(&serialized, &store).await;
         assert!(true);
     }
 }
