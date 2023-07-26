@@ -57,7 +57,7 @@ async fn handle_event(bytes: &[u8], store: &impl Store) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::store::store::{MockStore};
+    use crate::store::store::MockStore;
     use chrono::Utc;
     use protobuf::SpecialFields;
     use utils::{convert_chrono_to_timestamp::convert_chrono_to_timestamp, page_view, purchase};
@@ -75,7 +75,7 @@ mod tests {
                 );
                 return Ok(true);
             });
-        let purchase = customer_event::CustomerCloudEvent {
+        let customer_event = customer_event::CustomerCloudEvent {
             special_fields: SpecialFields::new(),
             payload: Some(customer_event::customer_cloud_event::Payload::Purchase(
                 purchase::PurchaseCloudEvent {
@@ -94,7 +94,7 @@ mod tests {
                 },
             )),
         };
-        let serialized = protobuf::Message::write_to_bytes(&purchase).unwrap();
+        let serialized = protobuf::Message::write_to_bytes(&customer_event).unwrap();
         let _result = handle_event(&serialized, &store).await;
         assert!(true);
     }
@@ -112,7 +112,7 @@ mod tests {
                 );
                 return Ok(true);
             });
-        let page_view_event = customer_event::CustomerCloudEvent {
+        let customer_event = customer_event::CustomerCloudEvent {
             special_fields: SpecialFields::new(),
             payload: Some(customer_event::customer_cloud_event::Payload::PageView(
                 page_view::PageViewCloudEvent {
@@ -132,7 +132,7 @@ mod tests {
                 },
             )),
         };
-        let serialized = protobuf::Message::write_to_bytes(&page_view_event).unwrap();
+        let serialized = protobuf::Message::write_to_bytes(&customer_event).unwrap();
         let _result = handle_event(&serialized, &store).await;
         assert!(true);
     }
