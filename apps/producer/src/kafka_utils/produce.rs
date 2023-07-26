@@ -13,6 +13,7 @@ pub fn start_producing_purchase_events() {
     println!("Starting purchase events producer...");
 
     for i in 0..i32::MAX {
+        thread::sleep(Duration::from_secs(3)); // Simulating work
         let purchase_event = purchase::PurchaseCloudEvent {
             id: String::from(format!("id-{i}")),
             source: String::from("try-rustlang-producer"),
@@ -40,7 +41,6 @@ pub fn start_producing_purchase_events() {
             .send(&Record::from_value(MESSAGES_TOPIC, value))
             .unwrap();
         println!("Produced message: {}", purchase_event.id);
-        thread::sleep(Duration::from_secs(3)); // Simulating work
     }
 }
 
@@ -50,6 +50,7 @@ pub fn start_producing_page_view_events() {
     println!("Starting page view producer...");
 
     for i in 0..i32::MAX {
+        thread::sleep(Duration::from_secs(3)); // Simulating work
         let page_view_event = page_view::PageViewCloudEvent {
             id: String::from("id"),
             source: String::from("source"),
@@ -77,6 +78,5 @@ pub fn start_producing_page_view_events() {
             .send(&Record::from_value(MESSAGES_TOPIC, value))
             .unwrap();
         println!("Produced message: {}", page_view_event.id);
-        thread::sleep(Duration::from_secs(3)); // Simulating work
     }
 }

@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use bson::oid::ObjectId;
 use chrono::Utc;
 use mockall::automock;
 use mongodb::{
@@ -7,26 +6,10 @@ use mongodb::{
     options::{ClientOptions, ResolverConfig},
     Client,
 };
-use serde::{Deserialize, Serialize};
 use std::env;
 use utils::{page_view::PageViewCloudEvent, purchase::PurchaseCloudEvent};
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Balance {
-    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
-    id: Option<ObjectId>,
-    amount: i64,
-    customer_id: String,
-    #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
-    updated_at: chrono::DateTime<Utc>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct PageView {
-    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
-    id: Option<ObjectId>,
-    view_count: i64,
-}
+use super::{balance::Balance, page_view::PageView};
 
 #[automock]
 #[async_trait]
@@ -75,7 +58,7 @@ impl Store for StoreImpl {
 
         match result {
             Ok(result) => {
-                println!("Updated {} documents", result.modified_count);
+                println!("Updated balance {} documents", result.modified_count);
             }
             Err(e) => {
                 println!("Error updating document: {}", e);
@@ -103,7 +86,7 @@ impl Store for StoreImpl {
 
         match result {
             Ok(result) => {
-                println!("Updated {} documents", result.modified_count);
+                println!("Updated page view {} documents", result.modified_count);
             }
             Err(e) => {
                 println!("Error updating document: {}", e);
