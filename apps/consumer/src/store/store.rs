@@ -9,7 +9,7 @@ use mongodb::{
 };
 use serde::{Deserialize, Serialize};
 use std::env;
-use utils::purchase::PurchaseCloudEvent;
+use utils::{page_view::PageViewCloudEvent, purchase::PurchaseCloudEvent};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Balance {
@@ -21,6 +21,13 @@ pub struct Balance {
     updated_at: chrono::DateTime<Utc>,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PageView {
+    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
+    id: Option<ObjectId>,
+    view_count: i64,
+}
+
 #[automock]
 #[async_trait]
 pub trait Store {
@@ -29,13 +36,14 @@ pub trait Store {
         purchase_event: PurchaseCloudEvent,
     ) -> Result<bool, Box<dyn std::error::Error>>;
 
+    async fn increment_page_view(
+        &self,
+        page_view_event: PageViewCloudEvent,
+    ) -> Result<bool, Box<dyn std::error::Error>>;
+
     async fn get_balance(customer_id: &str) -> Result<i64, Box<dyn std::error::Error>>;
 
     fn test_connection() -> bool;
-}
-
-pub fn get_store() -> impl Store {
-    return StoreImpl::new();
 }
 
 pub struct StoreImpl {}
@@ -61,6 +69,34 @@ impl Store for StoreImpl {
             .update_one(
                 doc! { "customer_id": purchase_event.data.customer_id.to_string() },
                 doc! { "$inc": { "amount":  purchase_event.data.amount as i64 }, "$set": { "updated_at": Utc::now() }},
+                options,
+            )
+            .await;
+
+        match result {
+            Ok(result) => {
+                println!("Updated {} documents", result.modified_count);
+            }
+            Err(e) => {
+                println!("Error updating document: {}", e);
+            }
+        }
+        return Ok(true);
+    }
+
+    async fn increment_page_view(
+        &self,
+        page_view_event: PageViewCloudEvent,
+    ) -> Result<bool, Box<dyn std::error::Error>> {
+        let page_views_collection = get_page_views_collection().await.unwrap();
+        let options = mongodb::options::UpdateOptions::builder()
+            .upsert(true)
+            .build();
+
+        let result = page_views_collection
+            .update_one(
+                doc! { "customer_id": page_view_event.data.customer_id.to_string() },
+                doc! { "$inc": { "view_count":  1 }},
                 options,
             )
             .await;
@@ -125,4 +161,16 @@ async fn get_balances_collection() -> Result<mongodb::Collection<Balance>, mongo
     let database = client.database("balances");
     let balances_collection: mongodb::Collection<Balance> = database.collection("balances");
     return Ok(balances_collection);
+}
+
+async fn get_page_views_collection() -> Result<mongodb::Collection<PageView>, mongodb::error::Error>
+{
+    let client = get_client().await.unwrap();
+    let database = client.database("page_views");
+    let page_views_collection: mongodb::Collection<PageView> = database.collection("page_views");
+    return Ok(page_views_collection);
+}
+
+pub fn get_store() -> impl Store {
+    return StoreImpl::new();
 }
