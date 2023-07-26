@@ -24,8 +24,7 @@ pub struct KafkaHandlerImpl {
 #[async_trait]
 impl KafkaHandler for KafkaHandlerImpl {
     fn start_consuming(&self) {
-        let store = &self.store;
-        println!("Start consuming {:#?}", store.type_id());
+        println!("Start consuming {:#?}", self.store.type_id());
         let runtime = runtime::Runtime::new().unwrap();
         let brokers = vec![config::config::CONFIG.kafka_brokers.to_string()];
         let group_id = "my-group".to_string();
@@ -50,7 +49,6 @@ impl KafkaHandler for KafkaHandlerImpl {
 
 impl KafkaHandlerImpl {
     async fn handle_event(&self, bytes: &[u8]) {
-        let store = &self.store;
         let customer_cloud_event =
             customer_event::CustomerCloudEvent::parse_from_bytes(&bytes).unwrap();
 
@@ -60,9 +58,9 @@ impl KafkaHandlerImpl {
                     "Received purchase event: {} from {}",
                     purchase_event.id, purchase_event.source
                 );
-                let _ = store.update_balance(&purchase_event).await;
+                let _ = self.store.update_balance(&purchase_event).await;
                 let data = Box::new(purchase_event.data);
-                let balance = store.get_balance(&data.customer_id).await.unwrap();
+                let balance = self.store.get_balance(&data.customer_id).await.unwrap();
                 println!(
                     "Balance for {} is {}",
                     data.customer_id.to_string(),
@@ -74,7 +72,7 @@ impl KafkaHandlerImpl {
                     "Received event: {} from {}",
                     page_view_event.id, page_view_event.source
                 );
-                let _ = store.increment_page_view(page_view_event).await;
+                let _ = self.store.increment_page_view(page_view_event).await;
             }
             _ => panic!("Unhandled type"),
         }
