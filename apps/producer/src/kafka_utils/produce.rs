@@ -52,7 +52,7 @@ pub fn start_producing_page_view_events() {
     for i in 0..i32::MAX {
         thread::sleep(Duration::from_secs(3)); // Simulating work
         let page_view_event = page_view::PageViewCloudEvent {
-            id: String::from("id"),
+            id: String::from(format!("id-{i}")),
             source: String::from("source"),
             spec_version: String::from("0.1.0"),
             special_fields: SpecialFields::new(),
