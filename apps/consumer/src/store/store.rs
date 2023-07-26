@@ -7,9 +7,9 @@ use mongodb::{
     options::{ClientOptions, ResolverConfig},
     Client,
 };
-use shaku::{module, Component, HasComponent, Interface};
+use shaku::{Component, Interface};
 use std::env;
-use std::sync::Arc;
+
 use utils::{page_view::PageViewCloudEvent, purchase::PurchaseCloudEvent};
 
 #[automock]

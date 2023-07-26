@@ -3,9 +3,8 @@ extern crate dotenv;
 extern crate lazy_static;
 extern crate serde_json;
 extern crate shaku;
-extern crate utils;
-#[macro_use]
 extern crate shaku_derive;
+extern crate utils;
 
 mod config;
 mod kafka_utils;
@@ -18,9 +17,7 @@ use std::thread;
 use utils::add;
 
 use crate::{
-    config::config::CONFIG,
-    kafka_utils::kafka_handler::KafkaHandlerImpl,
-    store::store::{Store, StoreImpl},
+    config::config::CONFIG, kafka_utils::kafka_handler::KafkaHandlerImpl, store::store::StoreImpl,
 };
 
 module! {

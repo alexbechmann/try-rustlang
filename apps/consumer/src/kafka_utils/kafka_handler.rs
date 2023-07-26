@@ -1,17 +1,12 @@
-use std::sync::Arc;
-
+use crate::{config, store::store::Store};
 use async_trait::async_trait;
 use kafka::consumer::{Consumer, FetchOffset};
 use mockall::automock;
 use protobuf::Message;
 use shaku::{Component, Interface};
+use std::sync::Arc;
 use tokio::runtime;
 use utils::{customer_event, kafka::topics::MESSAGES_TOPIC};
-
-use crate::{
-    config,
-    store::store::{Store, StoreImpl},
-};
 
 #[automock]
 #[async_trait]
@@ -30,10 +25,8 @@ pub struct KafkaHandlerImpl {
 impl KafkaHandler for KafkaHandlerImpl {
     fn start_consuming(&self) {
         let store = &self.store;
-        println!("start_consuming {:#?}", store.type_id());
-        println!("subscribe");
+        println!("Start consuming {:#?}", store.type_id());
         let runtime = runtime::Runtime::new().unwrap();
-        // let store = get_store();
         let brokers = vec![config::config::CONFIG.kafka_brokers.to_string()];
         let group_id = "my-group".to_string();
         let mut consumer = Consumer::from_hosts(brokers)
@@ -68,7 +61,7 @@ impl KafkaHandlerImpl {
                     purchase_event.id, purchase_event.source
                 );
                 let _ = store.update_balance(&purchase_event).await;
-                let data = Box::new(purchase_event.data);
+                let _data = Box::new(purchase_event.data);
                 // let balance = store
                 //     .get_balance(data.customer_id.to_string())
                 //     .await
