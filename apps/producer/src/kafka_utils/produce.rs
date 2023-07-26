@@ -24,7 +24,7 @@ pub fn start_producing_purchase_events() {
                 utils::convert_chrono_to_timestamp::convert_chrono_to_timestamp(&chrono::Utc::now()),
             ),
             data: protobuf::MessageField::some(purchase::purchase_cloud_event::Data {
-                amount: 12.0,
+                amount: 1.0 + i as f64,
                 customer_id: String::from(format!("customer1")),
                 item: Some(String::from("item1")),
                 special_fields: SpecialFields::new(),
@@ -50,7 +50,7 @@ pub fn start_producing_page_view_events() {
     println!("Starting page view producer...");
 
     for i in 0..i32::MAX {
-        thread::sleep(Duration::from_secs(3)); // Simulating work
+        thread::sleep(Duration::from_secs(5)); // Simulating work
         let page_view_event = page_view::PageViewCloudEvent {
             id: String::from(format!("id-{i}")),
             source: String::from("source"),

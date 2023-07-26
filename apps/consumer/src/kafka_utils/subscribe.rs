@@ -41,7 +41,17 @@ async fn handle_event(bytes: &[u8], store: &impl Store) {
                 "Received purchase event: {} from {}",
                 purchase_event.id, purchase_event.source
             );
-            let _ = store.update_balance(purchase_event).await;
+            let _ = store.update_balance(&purchase_event).await;
+            let data = Box::new(purchase_event.data);
+            let balance = store
+                .get_balance(data.customer_id.to_string())
+                .await
+                .unwrap();
+            println!(
+                "Balance for {} is {}",
+                data.customer_id.to_string(),
+                balance
+            );
         }
         customer_event::customer_cloud_event::Payload::PageView(page_view_event) => {
             println!(

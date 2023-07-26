@@ -16,7 +16,7 @@ use super::{balance::Balance, page_view::PageView};
 pub trait Store {
     async fn update_balance(
         &self,
-        purchase_event: PurchaseCloudEvent,
+        purchase_event: &PurchaseCloudEvent,
     ) -> Result<bool, Box<dyn std::error::Error>>;
 
     async fn increment_page_view(
@@ -24,7 +24,10 @@ pub trait Store {
         page_view_event: PageViewCloudEvent,
     ) -> Result<bool, Box<dyn std::error::Error>>;
 
-    async fn get_balance(customer_id: &str) -> Result<i64, Box<dyn std::error::Error>>;
+    async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
+        &self,
+        customer_id: I,
+    ) -> Result<i64, Box<dyn std::error::Error>>;
 
     fn test_connection() -> bool;
 }
@@ -41,7 +44,7 @@ impl StoreImpl {
 impl Store for StoreImpl {
     async fn update_balance(
         &self,
-        purchase_event: PurchaseCloudEvent,
+        purchase_event: &PurchaseCloudEvent,
     ) -> Result<bool, Box<dyn std::error::Error>> {
         let balances_collection = get_balances_collection().await.unwrap();
         let options = mongodb::options::UpdateOptions::builder()
@@ -95,10 +98,13 @@ impl Store for StoreImpl {
         return Ok(true);
     }
 
-    async fn get_balance(customer_id: &str) -> Result<i64, Box<dyn std::error::Error>> {
+    async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
+        &self,
+        customer_id: I,
+    ) -> Result<i64, Box<dyn std::error::Error>> {
         let balances_collection = get_balances_collection().await.unwrap();
         let existing_balance = balances_collection
-            .find_one(doc! { "customer_id": customer_id.to_string() }, None)
+            .find_one(doc! { "customer_id": customer_id.into() }, None)
             .await;
 
         if let Some(balance) = existing_balance.unwrap() {
