@@ -73,7 +73,6 @@ pub fn start_producing_page_view_events() {
             )),
         };
         let value = protobuf::Message::write_to_bytes(&customer_cloud_event).unwrap();
-        let value = protobuf::Message::write_to_bytes(&page_view_event).unwrap();
         producer
             .send(&Record::from_value(MESSAGES_TOPIC, value))
             .unwrap();
