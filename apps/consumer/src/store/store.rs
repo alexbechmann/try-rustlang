@@ -1,3 +1,4 @@
+use super::{balance::Balance, page_view::PageView};
 use async_trait::async_trait;
 use chrono::Utc;
 use mockall::automock;
@@ -6,14 +7,14 @@ use mongodb::{
     options::{ClientOptions, ResolverConfig},
     Client,
 };
+use shaku::{module, Component, HasComponent, Interface};
 use std::env;
+use std::sync::Arc;
 use utils::{page_view::PageViewCloudEvent, purchase::PurchaseCloudEvent};
-
-use super::{balance::Balance, page_view::PageView};
 
 #[automock]
 #[async_trait]
-pub trait Store {
+pub trait Store: Interface {
     async fn update_balance(
         &self,
         purchase_event: &PurchaseCloudEvent,
@@ -24,21 +25,29 @@ pub trait Store {
         page_view_event: PageViewCloudEvent,
     ) -> Result<bool, Box<dyn std::error::Error>>;
 
-    async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
-        &self,
-        customer_id: I,
-    ) -> Result<i64, Box<dyn std::error::Error>>;
+    // async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
+    //     &self,
+    //     customer_id: I,
+    // ) -> Result<i64, Box<dyn std::error::Error>>;
 
-    fn test_connection() -> bool;
+    // fn test_connection() -> bool;
 }
 
-pub struct StoreImpl {}
-
-impl StoreImpl {
-    pub fn new() -> StoreImpl {
-        StoreImpl {}
-    }
+#[derive(Component)]
+#[shaku(interface = Store)]
+pub struct StoreImpl {
+    // #[shaku(inject)]
+    // store: Arc<dyn Store>,
 }
+
+// impl StoreImpl {
+//     // store: Store;
+
+//     #[inject]
+//     pub fn new() -> Self {
+//         Self {}
+//     }
+// }
 
 #[async_trait]
 impl Store for StoreImpl {
@@ -98,42 +107,42 @@ impl Store for StoreImpl {
         return Ok(true);
     }
 
-    async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
-        &self,
-        customer_id: I,
-    ) -> Result<i64, Box<dyn std::error::Error>> {
-        let balances_collection = get_balances_collection().await.unwrap();
-        let existing_balance = balances_collection
-            .find_one(doc! { "customer_id": customer_id.into() }, None)
-            .await;
+    // async fn get_balance<I: Into<String> + 'static + std::marker::Send>(
+    //     &self,
+    //     customer_id: I,
+    // ) -> Result<i64, Box<dyn std::error::Error>> {
+    //     let balances_collection = get_balances_collection().await.unwrap();
+    //     let existing_balance = balances_collection
+    //         .find_one(doc! { "customer_id": customer_id.into() }, None)
+    //         .await;
 
-        if let Some(balance) = existing_balance.unwrap() {
-            return Ok(balance.amount);
-        } else {
-            return Ok(0);
-        }
-    }
+    //     if let Some(balance) = existing_balance.unwrap() {
+    //         return Ok(balance.amount);
+    //     } else {
+    //         return Ok(0);
+    //     }
+    // }
 
-    fn test_connection() -> bool {
-        let runtime = tokio::runtime::Runtime::new().unwrap();
-        let client = runtime.block_on(get_client());
-        match client {
-            Ok(client) => {
-                println!("Connected successfully.");
-                let database_names = runtime
-                    .block_on(client.list_database_names(None, None))
-                    .unwrap();
-                for name in database_names {
-                    println!("- {}", name);
-                }
-                return true;
-            }
-            Err(e) => {
-                println!("Error connecting to MongoDB: {}", e);
-                return false;
-            }
-        }
-    }
+    // fn test_connection() -> bool {
+    //     let runtime = tokio::runtime::Runtime::new().unwrap();
+    //     let client = runtime.block_on(get_client());
+    //     match client {
+    //         Ok(client) => {
+    //             println!("Connected successfully.");
+    //             let database_names = runtime
+    //                 .block_on(client.list_database_names(None, None))
+    //                 .unwrap();
+    //             for name in database_names {
+    //                 println!("- {}", name);
+    //             }
+    //             return true;
+    //         }
+    //         Err(e) => {
+    //             println!("Error connecting to MongoDB: {}", e);
+    //             return false;
+    //         }
+    //     }
+    // }
 }
 
 async fn get_client() -> Result<Client, mongodb::error::Error> {
@@ -160,6 +169,7 @@ async fn get_page_views_collection() -> Result<mongodb::Collection<PageView>, mo
     return Ok(page_views_collection);
 }
 
-pub fn get_store() -> impl Store {
-    return StoreImpl::new();
-}
+// pub fn get_store() -> impl Store {
+//     let store = get!(&container, Store);
+//     return store;
+// }

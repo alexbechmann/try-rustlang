@@ -19,7 +19,6 @@
       "request": "attach",
       "program": "${workspaceFolder}/apps/producer/target/debug/producer"
     },
-    // consumer
     {
       "name": "Consumer debug",
       "type": "lldb",
