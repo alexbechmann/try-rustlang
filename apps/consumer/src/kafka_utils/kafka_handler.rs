@@ -61,16 +61,13 @@ impl KafkaHandlerImpl {
                     purchase_event.id, purchase_event.source
                 );
                 let _ = store.update_balance(&purchase_event).await;
-                let _data = Box::new(purchase_event.data);
-                // let balance = store
-                //     .get_balance(data.customer_id.to_string())
-                //     .await
-                //     .unwrap();
-                // println!(
-                //     "Balance for {} is {}",
-                //     data.customer_id.to_string(),
-                //     balance
-                // );
+                let data = Box::new(purchase_event.data);
+                let balance = store.get_balance(&data.customer_id).await.unwrap();
+                println!(
+                    "Balance for {} is {}",
+                    data.customer_id.to_string(),
+                    balance
+                );
             }
             customer_event::customer_cloud_event::Payload::PageView(page_view_event) => {
                 println!(
@@ -104,6 +101,13 @@ mod tests {
                     purchase_event.data.customer_id
                 );
                 return Ok(true);
+            });
+        store
+            .expect_get_balance()
+            .times(1)
+            .returning(|customer_id| {
+                println!("Mocked get_balance for {}", customer_id);
+                return Ok(12.0 as i64);
             });
         let customer_event = customer_event::CustomerCloudEvent {
             special_fields: SpecialFields::new(),
