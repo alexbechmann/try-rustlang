@@ -13,11 +13,19 @@ mod store;
 use dotenv::dotenv;
 use kafka_utils::kafka_handler::KafkaHandler;
 use shaku::{module, HasComponent};
-use std::thread;
+use std::{
+    borrow::BorrowMut,
+    ops::DerefMut,
+    rc::Rc,
+    sync::{Arc, Mutex, RwLock},
+    thread,
+};
 use utils::add;
 
 use crate::{
-    config::config::CONFIG, kafka_utils::kafka_handler::KafkaHandlerImpl, store::store::StoreImpl,
+    config::config::CONFIG,
+    kafka_utils::kafka_handler::KafkaHandlerImpl,
+    store::store::{Store, StoreImpl},
 };
 
 module! {
@@ -40,6 +48,9 @@ async fn main() {
     println!("source is {source}");
 
     utils::kafka::create_topics::create_topics(&CONFIG.kafka_brokers).await;
+    let mut store: Arc<dyn Store> = APP_MODULE.resolve();
+    let x = Arc::get_mut(&mut store).unwrap();
+    x.connect().await.unwrap();
 
     let subscribe_thread = thread::spawn(move || {
         let kafka_handler: &dyn KafkaHandler = APP_MODULE.resolve_ref();
