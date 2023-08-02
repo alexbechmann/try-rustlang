@@ -33,8 +33,35 @@ lazy_static! {
     };
 }
 
+#[derive(thiserror::Error, Debug)]
+enum DoSomethingError {
+    #[error("Wrong answer")]
+    WrongAnswer,
+    #[error("A little bit more")]
+    More,
+    #[error("A little bit less")]
+    Less,
+}
+
+fn do_something(input: &str) -> Result<String, DoSomethingError> {
+    return match input {
+        "a" => Err(DoSomethingError::WrongAnswer),
+        "b" => Err(DoSomethingError::More),
+        "c" => Err(DoSomethingError::Less),
+        _ => Ok("ok".to_string()),
+    };
+}
+
 #[tokio::main]
 async fn main() {
+    let result = do_something("hello");
+    match result {
+        Ok(value) => println!("value is {value}"),
+        Err(DoSomethingError::WrongAnswer) => println!("Wrong answer"),
+        Err(DoSomethingError::More) => println!("A little bit more"),
+        Err(DoSomethingError::Less) => println!("A little bit less"),
+    }
+
     dotenv().ok();
     let source = "rust";
     println!("source is {source}");
