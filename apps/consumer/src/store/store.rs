@@ -7,14 +7,16 @@ use mongodb::{
     options::{ClientOptions, ResolverConfig},
     Client,
 };
-use shaku::{Component, Interface};
 use std::env;
+use syrette::injectable;
+use syrette::ptr::TransientPtr;
+use syrette::DIContainer;
 
 use utils::{page_view::PageViewCloudEvent, purchase::PurchaseCloudEvent};
 
 #[automock]
 #[async_trait]
-pub trait Store: Interface {
+pub trait Store {
     async fn update_balance(
         &self,
         purchase_event: &PurchaseCloudEvent,
@@ -28,9 +30,14 @@ pub trait Store: Interface {
     async fn get_balance(&self, customer_id: &str) -> Result<i64, Box<dyn std::error::Error>>;
 }
 
-#[derive(Component)]
-#[shaku(interface = Store)]
 pub struct StoreImpl {}
+
+#[injectable(Store)]
+impl StoreImpl {
+    fn new() -> Self {
+        Self {}
+    }
+}
 
 #[async_trait]
 impl Store for StoreImpl {

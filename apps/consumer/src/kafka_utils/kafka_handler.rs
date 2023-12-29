@@ -3,28 +3,34 @@ use async_trait::async_trait;
 use kafka::consumer::{Consumer, FetchOffset};
 use mockall::automock;
 use protobuf::Message;
-use shaku::{Component, Interface};
 use std::sync::Arc;
+use syrette::injectable;
+use syrette::ptr::TransientPtr;
+use syrette::DIContainer;
 use tokio::runtime;
 use utils::{customer_event, kafka::topics::MESSAGES_TOPIC};
 
 #[automock]
-#[async_trait]
-pub trait KafkaHandler: Interface {
+// #[async_trait]
+pub trait KafkaHandler {
     fn start_consuming(&self);
 }
 
-#[derive(Component)]
-#[shaku(interface = KafkaHandler)]
 pub struct KafkaHandlerImpl {
-    #[shaku(inject)]
-    store: Arc<dyn Store>,
+    store: TransientPtr<dyn Store>,
 }
 
-#[async_trait]
+#[injectable(KafkaHandler)]
+impl KafkaHandlerImpl {
+    fn new(store: TransientPtr<dyn Store>) -> Self {
+        Self { store: store }
+    }
+}
+
+// #[async_trait]
 impl KafkaHandler for KafkaHandlerImpl {
     fn start_consuming(&self) {
-        println!("Start consuming {:#?}", self.store.type_id());
+        // println!("Start consuming {:#?}", self.store);
         let runtime = runtime::Runtime::new().unwrap();
         let brokers = vec![config::config::CONFIG.kafka_brokers.to_string()];
         let group_id = "my-group".to_string();
@@ -128,7 +134,7 @@ mod tests {
         };
         let serialized = protobuf::Message::write_to_bytes(&customer_event).unwrap();
         let kafka_handler = KafkaHandlerImpl {
-            store: Arc::new(store),
+            store: Box::new(store),
         };
         let _result = kafka_handler.handle_event(&serialized).await;
         assert!(true);
@@ -169,7 +175,7 @@ mod tests {
         };
         let serialized = protobuf::Message::write_to_bytes(&customer_event).unwrap();
         let kafka_handler = KafkaHandlerImpl {
-            store: Arc::new(store),
+            store: Box::new(store),
         };
         let _result = kafka_handler.handle_event(&serialized).await;
         assert!(true);

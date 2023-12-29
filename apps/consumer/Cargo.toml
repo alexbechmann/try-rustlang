@@ -19,6 +19,5 @@ chrono = "0.4.26"
 serde = "1.0.175"
 async-trait = "0.1.72"
 mockall = "0.11.4"
-shaku = "0.6.1"
-shaku_derive = "0.6.1"
 thiserror = "1.0.44"
+syrette = { version = "0.5.1", features = ["async", "prevent-circular"] }

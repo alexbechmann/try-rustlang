@@ -2,36 +2,29 @@ extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
 extern crate serde_json;
-extern crate shaku;
-extern crate shaku_derive;
 extern crate utils;
 
 mod config;
+mod container;
 mod kafka_utils;
 mod store;
 
 use dotenv::dotenv;
 use kafka_utils::kafka_handler::KafkaHandler;
-use shaku::{module, HasComponent};
-use std::thread;
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
+use syrette::injectable;
+use syrette::ptr::TransientPtr;
+use syrette::DIContainer;
 use utils::add;
 
 use crate::{
-    config::config::CONFIG, kafka_utils::kafka_handler::KafkaHandlerImpl, store::store::StoreImpl,
+    config::config::CONFIG,
+    kafka_utils::kafka_handler::KafkaHandlerImpl,
+    store::store::{Store, StoreImpl},
 };
-
-module! {
-    AppModule {
-        components = [StoreImpl, KafkaHandlerImpl],
-        providers = []
-    }
-}
-
-lazy_static! {
-    static ref APP_MODULE: AppModule = {
-        return AppModule::builder().build();
-    };
-}
 
 #[derive(thiserror::Error, Debug)]
 enum DoSomethingError {
@@ -53,7 +46,10 @@ fn do_something(input: &str) -> Result<String, DoSomethingError> {
 }
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // let container = container::container::create_default_container();
+    // let kafka_handler = container.get::<dyn KafkaHandler>()?.transient()?;
+
     let result = do_something("hello");
     match result {
         Ok(value) => println!("value is {value}"),
@@ -69,7 +65,12 @@ async fn main() {
     utils::kafka::create_topics::create_topics(&CONFIG.kafka_brokers).await;
 
     let subscribe_thread = thread::spawn(move || {
-        let kafka_handler: &dyn KafkaHandler = APP_MODULE.resolve_ref();
+        let container = container::container::create_default_container();
+        let kafka_handler = container
+            .get::<dyn KafkaHandler>()
+            .unwrap()
+            .transient()
+            .unwrap();
         kafka_handler.start_consuming();
     });
 
@@ -77,4 +78,6 @@ async fn main() {
     println!("result is {result}");
 
     subscribe_thread.join().unwrap();
+
+    Ok(())
 }

@@ -1,5 +1,4 @@
 use std::error::Error;
-
 use syrette::injectable;
 use syrette::ptr::TransientPtr;
 use syrette::DIContainer;
@@ -29,6 +28,7 @@ trait IWarrior {
     fn level_up(&mut self);
 
     // async fn travel(&self);
+
     fn get_level(&self) -> i32;
 }
 
@@ -51,6 +51,7 @@ impl IWarrior for Warrior {
 
     fn level_up(&mut self) {
         self.level += 1;
+        println!("Warrior leveled up to {}", self.level)
     }
 
     fn get_level(&self) -> i32 {
@@ -67,9 +68,12 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     warrior.fight();
     warrior.level_up();
+    warrior.level_up();
 
     println!("Warrior has fighted");
-    println!("Warrior level: {}", warrior.get_level());
+
+    let level = warrior.get_level();
+    println!("Warrior level: {}", level);
 
     Ok(())
 }
