@@ -3,5 +3,10 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
-  "rust-analyzer.linkedProjects": ["./apps/consumer/Cargo.toml", "./apps/producer/Cargo.toml", "./libs/utils/Cargo.toml"]
+  "rust-analyzer.linkedProjects": [
+    "./apps/consumer/Cargo.toml",
+    "./apps/producer/Cargo.toml",
+    "./libs/utils/Cargo.toml",
+    "./apps/example/Cargo.toml"
+  ]
 }
